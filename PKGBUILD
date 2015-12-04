@@ -9,6 +9,7 @@ url='https://swift.org/'
 makedepends=('cmake' 'ninja' 'python' 'clang' 'libbsd' 'icu' 'libedit' 'libxml2' 'sqlite' 'swig' 'ncurses')
 source=(
   'python.patch'
+  'headerpaths.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
   "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
   "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
@@ -19,11 +20,12 @@ source=(
   "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
   "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
 )
-md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 prepare() {
   cd "$srcdir/swift"
   git apply "$srcdir/python.patch"
+  git apply "$srcdir/headerpaths.patch"
 }
 
 build() {

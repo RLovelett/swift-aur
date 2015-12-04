@@ -1,0 +1,102 @@
+diff --git a/stdlib/public/Glibc/module.map b/stdlib/public/Glibc/module.map
+index b08485d..704e2b4 100644
+--- a/stdlib/public/Glibc/module.map
++++ b/stdlib/public/Glibc/module.map
+@@ -184,7 +184,7 @@ module SwiftGlibc [system] {
+       export *
+     }
+     module ioctl {
+-      header "/usr/include/x86_64-linux-gnu/sys/ioctl.h"
++      header "/usr/include/sys/ioctl.h"
+       export *
+     }
+     module langinfo {
+@@ -266,71 +266,71 @@ module SwiftGlibc [system] {
+       export *
+ 
+       module ipc {
+-        header "/usr/include/x86_64-linux-gnu/sys/ipc.h"
++        header "/usr/include/sys/ipc.h"
+         export *
+       }
+       module mman {
+-        header "/usr/include/x86_64-linux-gnu/sys/mman.h"
++        header "/usr/include/sys/mman.h"
+         export *
+       }
+       module msg {
+-        header "/usr/include/x86_64-linux-gnu/sys/msg.h"
++        header "/usr/include/sys/msg.h"
+         export *
+       }
+       module resource {
+-        header "/usr/include/x86_64-linux-gnu/sys/resource.h"
++        header "/usr/include/sys/resource.h"
+         export *
+       }
+       module select {
+-        header "/usr/include/x86_64-linux-gnu/sys/select.h"
++        header "/usr/include/sys/select.h"
+         export *
+       }
+       module sem {
+-        header "/usr/include/x86_64-linux-gnu/sys/sem.h"
++        header "/usr/include/sys/sem.h"
+         export *
+       }
+       module shm {
+-        header "/usr/include/x86_64-linux-gnu/sys/shm.h"
++        header "/usr/include/sys/shm.h"
+         export *
+       }
+       module socket {
+-        header "/usr/include/x86_64-linux-gnu/sys/socket.h"
++        header "/usr/include/sys/socket.h"
+         export *
+       }
+       module stat {
+-        header "/usr/include/x86_64-linux-gnu/sys/stat.h"
++        header "/usr/include/sys/stat.h"
+         export *
+       }
+       module statvfs {
+-        header "/usr/include/x86_64-linux-gnu/sys/statvfs.h"
++        header "/usr/include/sys/statvfs.h"
+         export *
+       }
+       module time {
+-        header "/usr/include/x86_64-linux-gnu/sys/time.h"
++        header "/usr/include/sys/time.h"
+         export *
+       }
+       module times {
+-        header "/usr/include/x86_64-linux-gnu/sys/times.h"
++        header "/usr/include/sys/times.h"
+         export *
+       }
+       module types {
+-        header "/usr/include/x86_64-linux-gnu/sys/types.h"
++        header "/usr/include/sys/types.h"
+         export *
+       }
+       module uio {
+-        header "/usr/include/x86_64-linux-gnu/sys/uio.h"
++        header "/usr/include/sys/uio.h"
+         export *
+       }
+       module un {
+-        header "/usr/include/x86_64-linux-gnu/sys/un.h"
++        header "/usr/include/sys/un.h"
+         export *
+       }
+       module utsname {
+-        header "/usr/include/x86_64-linux-gnu/sys/utsname.h"
++        header "/usr/include/sys/utsname.h"
+         export *
+       }
+       module wait {
+-        header "/usr/include/x86_64-linux-gnu/sys/wait.h"
++        header "/usr/include/sys/wait.h"
+         export *
+       }
+     }
