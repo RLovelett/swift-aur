@@ -6,7 +6,7 @@ arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
 url='https://swift.org/'
-makedepends=('cmake' 'ninja' 'python' 'clang' 'libbsd' 'icu' 'libedit' 'libxml2' 'sqlite' 'swig' 'ncurses')
+makedepends=('git' 'cmake' 'ninja' 'python' 'clang' 'libbsd' 'icu' 'libedit' 'libxml2' 'sqlite' 'swig' 'ncurses')
 source=(
   '0001-Miscellaneous-fixes-for-Python-3-compatibility.patch'
   'headerpaths.patch'
