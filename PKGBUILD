@@ -30,7 +30,7 @@ prepare() {
 
 build() {
   cd "$srcdir/"
-  swift/utils/build-script -R
+  swift/utils/build-script -R -- --verbose-build
 }
 
 check() {
