@@ -8,7 +8,7 @@ pkgdesc='Swift Programming Language'
 url='https://swift.org/'
 makedepends=('cmake' 'ninja' 'python' 'clang' 'libbsd' 'icu' 'libedit' 'libxml2' 'sqlite' 'swig' 'ncurses')
 source=(
-  'python.patch'
+  '0001-Miscellaneous-fixes-for-Python-3-compatibility.patch'
   'headerpaths.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
   "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
@@ -24,7 +24,7 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' '
 
 prepare() {
   cd "$srcdir/swift"
-  git apply "$srcdir/python.patch"
+  git apply "$srcdir/0001-Miscellaneous-fixes-for-Python-3-compatibility.patch"
   git apply "$srcdir/headerpaths.patch"
 }
 

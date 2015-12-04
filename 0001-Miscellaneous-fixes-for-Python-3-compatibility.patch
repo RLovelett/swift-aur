@@ -1,0 +1,925 @@
+From c8361fb1ec8aafdc39d84cfe970f63ff5fc3bb9c Mon Sep 17 00:00:00 2001
+From: Alex Chan <alex@alexwlchan.net>
+Date: Thu, 3 Dec 2015 20:17:19 +0000
+Subject: [PATCH] Miscellaneous fixes for Python 3 compatibility
+
+---
+ lib/ClangImporter/SortedCFDatabase.def.gyb         |  10 +-
+ .../Dependencies/Inputs/fake-build-for-bitcode.py  |   6 +-
+ .../Dependencies/Inputs/fake-build-whole-module.py |   4 +-
+ .../Inputs/modify-non-primary-files.py             |   6 +-
+ .../Dependencies/Inputs/update-dependencies-bad.py |   4 +-
+ .../Dependencies/Inputs/update-dependencies.py     |   6 +-
+ test/Inputs/getmtime.py                            |   4 +-
+ tools/SourceKit/bindings/python/sourcekitd/capi.py |  12 +--
+ .../bindings/python/sourcekitd/request.py          |   2 +-
+ utils/GYBUnicodeDataUtils.py                       |  16 ++--
+ utils/SwiftBuildSupport.py                         |   6 +-
+ utils/apply-fixit-edits.py                         |  10 +-
+ utils/benchmark/BST/bst.py                         |  18 ++--
+ utils/benchmark/BST/lfsr.py                        |   8 +-
+ utils/benchmark/Graph/generate-data.py             |  11 ++-
+ utils/benchmark/Phonebook/Phonebook.py             |   2 +-
+ utils/benchmark/RC4/RC4.py                         |  14 +--
+ utils/gyb.py                                       | 103 ++++++++++++---------
+ .../scripts/pipelines_build_script.py              |   2 +-
+ utils/protocol_graph.py                            |  26 +++---
+ utils/swift-bench.py                               |   2 +-
+ 21 files changed, 159 insertions(+), 113 deletions(-)
+ mode change 100644 => 100755 utils/benchmark/BST/bst.py
+ mode change 100644 => 100755 utils/benchmark/Graph/generate-data.py
+
+diff --git a/lib/ClangImporter/SortedCFDatabase.def.gyb b/lib/ClangImporter/SortedCFDatabase.def.gyb
+index 0cfa84e..79dcfec 100644
+--- a/lib/ClangImporter/SortedCFDatabase.def.gyb
++++ b/lib/ClangImporter/SortedCFDatabase.def.gyb
+@@ -30,17 +30,17 @@ with open(CFDatabaseFile, 'rb') as f:
+   for line in f:
+     # Pass through preprocessor directives literally.
+     # Assume that they all fall into either a strict prologue or epilogue.
+-    if re.match('^#', line):
++    if re.match(b'^#', line):
+       if len(lineForName) == 0:
+-        prologueLines += line
++        prologueLines += line.decode()
+       else:
+-        epilogueLines += line
++        epilogueLines += line.decode()
+       continue
+ 
+     # Otherwise, check for lines like FOO(BAR)
+-    m = re.match('^\w+\((\w+)\)', line)   
++    m = re.match(b'^\w+\((\w+)\)', line)
+     if m:
+-      lineForName[m.group(1)] = line
++      lineForName[m.group(1)] = line.decode()
+ }%
+ 
+ ${prologueLines}
+diff --git a/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py b/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
+index 24855b1..83fa8f9 100755
+--- a/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
++++ b/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
+@@ -3,6 +3,8 @@
+ # Emulates the frontend of an -embed-bitcode job. That means we have to handle
+ # -emit-bc and -c actions.
+ 
++from __future__ import print_function
++
+ import os
+ import shutil
+ import sys
+@@ -18,8 +20,8 @@ with open(outputFile, 'a'):
+     os.utime(outputFile, None)
+ 
+ if '-emit-bc' in sys.argv:
+-  print "Handled", os.path.basename(primaryFile)
++  print("Handled", os.path.basename(primaryFile))
+ elif '-c' in sys.argv:
+-  print "Produced", os.path.basename(outputFile)
++  print("Produced", os.path.basename(outputFile))
+ else:
+   assert False, "unknown action"
+diff --git a/test/Driver/Dependencies/Inputs/fake-build-whole-module.py b/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
+index 3b176a2..51d4794 100755
+--- a/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
++++ b/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
+@@ -2,6 +2,8 @@
+ 
+ # Emulates the frontend of a -whole-module-optimization compilation.
+ 
++from __future__ import print_function
++
+ import os
+ import shutil
+ import sys
+@@ -16,4 +18,4 @@ outputFile = sys.argv[sys.argv.index('-o') + 1]
+ with open(outputFile, 'a'):
+     os.utime(outputFile, None)
+ 
+-print "Produced", os.path.basename(outputFile)
++print("Produced", os.path.basename(outputFile))
+diff --git a/test/Driver/Dependencies/Inputs/modify-non-primary-files.py b/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
+index a131a72..efd2267 100755
+--- a/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
++++ b/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
+@@ -3,6 +3,8 @@
+ # modify-non-primary-files.py simulates a build where the user is modifying the
+ # source files during compilation.
+ 
++from __future__ import print_function
++
+ import os
+ import shutil
+ import sys
+@@ -32,6 +34,6 @@ with open(outputFile, 'a'):
+     os.utime(outputFile, None)
+ 
+ if primaryFile:
+-  print "Handled", os.path.basename(primaryFile)
++  print("Handled", os.path.basename(primaryFile))
+ else:
+-  print "Produced", os.path.basename(outputFile)
++  print("Produced", os.path.basename(outputFile))
+diff --git a/test/Driver/Dependencies/Inputs/update-dependencies-bad.py b/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
+index 1c2c9f8..b427b50 100755
+--- a/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
++++ b/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
+@@ -3,6 +3,8 @@
+ # Fails if the input file is named "bad.swift"; otherwise dispatches to
+ # update-dependencies.py.
+ 
++from __future__ import print_function
++
+ import os
+ import sys
+ 
+@@ -11,7 +13,7 @@ assert sys.argv[1] == '-frontend'
+ primaryFile = sys.argv[sys.argv.index('-primary-file') + 1]
+ 
+ if os.path.basename(primaryFile) == 'bad.swift':
+-    print "Handled", os.path.basename(primaryFile)
++    print("Handled", os.path.basename(primaryFile))
+     exit(1)
+ 
+ dir = os.path.dirname(os.path.abspath(__file__))
+diff --git a/test/Driver/Dependencies/Inputs/update-dependencies.py b/test/Driver/Dependencies/Inputs/update-dependencies.py
+index aac7769..0ab62ee 100755
+--- a/test/Driver/Dependencies/Inputs/update-dependencies.py
++++ b/test/Driver/Dependencies/Inputs/update-dependencies.py
+@@ -14,6 +14,8 @@
+ #
+ # If invoked in non-primary-file mode, it only creates the output file.
+ 
++from __future__ import print_function
++
+ import os
+ import shutil
+ import sys
+@@ -37,6 +39,6 @@ with open(outputFile, 'a'):
+     os.utime(outputFile, None)
+ 
+ if primaryFile:
+-  print "Handled", os.path.basename(primaryFile)
++  print("Handled", os.path.basename(primaryFile))
+ else:
+-  print "Produced", os.path.basename(outputFile)
++  print("Produced", os.path.basename(outputFile))
+diff --git a/test/Inputs/getmtime.py b/test/Inputs/getmtime.py
+index 0a7a139..6791b7b 100755
+--- a/test/Inputs/getmtime.py
++++ b/test/Inputs/getmtime.py
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env python
+ 
++from __future__ import print_function
++
+ import os
+ import sys
+ 
+-print os.path.getmtime(sys.argv[1])
++print(os.path.getmtime(sys.argv[1]))
+diff --git a/tools/SourceKit/bindings/python/sourcekitd/capi.py b/tools/SourceKit/bindings/python/sourcekitd/capi.py
+index 6989c47..5847543 100644
+--- a/tools/SourceKit/bindings/python/sourcekitd/capi.py
++++ b/tools/SourceKit/bindings/python/sourcekitd/capi.py
+@@ -61,7 +61,7 @@ class Object(object):
+             self._obj = conf.lib.sourcekitd_request_dictionary_create(
+                 POINTER(c_void_p)(), POINTER(c_void_p)(), 0)
+             self._as_parameter_ = self._obj
+-            for k,v in obj.iteritems():
++            for k,v in obj.items():
+                 conf.lib.sourcekitd_request_dictionary_set_value(self,
+                     UIdent(k), Object(v))
+         elif isinstance(obj, (list,tuple)):
+@@ -156,7 +156,7 @@ class ErrorKind(object):
+         if value >= len(ErrorKind._kinds):
+             ErrorKind._kinds += [None] * (value - len(ErrorKind._kinds) + 1)
+         if ErrorKind._kinds[value] is not None:
+-            raise ValueError,'ErrorKind already loaded'
++            raise ValueError('ErrorKind already loaded')
+         self.value = value
+         ErrorKind._kinds[value] = self
+         ErrorKind._name_map = None
+@@ -177,7 +177,7 @@ class ErrorKind(object):
+     @staticmethod
+     def from_id(id):
+         if id >= len(ErrorKind._kinds) or ErrorKind._kinds[id] is None:
+-            raise ValueError,'Unknown type kind %d' % id
++            raise ValueError('Unknown type kind %d' % id)
+         return ErrorKind._kinds[id]
+ 
+     def __repr__(self):
+@@ -239,7 +239,7 @@ class VariantType(object):
+         if value >= len(VariantType._kinds):
+             VariantType._kinds += [None] * (value - len(VariantType._kinds) + 1)
+         if VariantType._kinds[value] is not None:
+-            raise ValueError,'VariantType already loaded'
++            raise ValueError('VariantType already loaded')
+         self.value = value
+         VariantType._kinds[value] = self
+         VariantType._name_map = None
+@@ -260,7 +260,7 @@ class VariantType(object):
+     @staticmethod
+     def from_id(id):
+         if id >= len(VariantType._kinds) or VariantType._kinds[id] is None:
+-            raise ValueError,'Unknown type kind %d' % id
++            raise ValueError('Unknown type kind %d' % id)
+         return VariantType._kinds[id]
+ 
+     def __repr__(self):
+@@ -529,7 +529,7 @@ def register_functions(lib, ignore_errors):
+     def register(item):
+         return register_function(lib, item, ignore_errors)
+ 
+-    map(register, functionList)
++    list(map(register, functionList))
+ 
+ class Config:
+     library_path = None
+diff --git a/tools/SourceKit/bindings/python/sourcekitd/request.py b/tools/SourceKit/bindings/python/sourcekitd/request.py
+index 2b60cd8..db56e26 100644
+--- a/tools/SourceKit/bindings/python/sourcekitd/request.py
++++ b/tools/SourceKit/bindings/python/sourcekitd/request.py
+@@ -10,7 +10,7 @@
+ #
+ #===------------------------------------------------------------------------===#
+ 
+-import capi
++from . import capi
+ 
+ def request_sync(req):
+     ptr = capi.conf.lib.sourcekitd_send_request_sync(capi.Object(req))
+diff --git a/utils/GYBUnicodeDataUtils.py b/utils/GYBUnicodeDataUtils.py
+index 37004d7..b9c6f86 100644
+--- a/utils/GYBUnicodeDataUtils.py
++++ b/utils/GYBUnicodeDataUtils.py
+@@ -64,32 +64,32 @@ class GraphemeClusterBreakPropertyTable(UnicodeProperty):
+         # values to symbolic values.
+         self.symbolic_values = \
+             [ None ] * (max(self.numeric_value_table.values()) + 1)
+-        for k,v in self.numeric_value_table.iteritems():
++        for k, v in self.numeric_value_table.items():
+             self.symbolic_values[v] = k
+ 
+         # Load the data file.
+         with open(grapheme_break_property_file_name, 'rb') as f:
+             for line in f:
+                 # Strip comments.
+-                line = re.sub('#.*', '', line)
++                line = re.sub(b'#.*', b'', line)
+ 
+                 # Single code point?
+-                m = re.match('([0-9A-F]+) +; +([a-zA-Z]+) ', line)
++                m = re.match(b'([0-9A-F]+) +; +([a-zA-Z]+) ', line)
+                 if m:
+                     code_point = int(m.group(1), 16)
+                     value = m.group(2)
+                     self.property_value_ranges += \
+-                        [(code_point, code_point, value)]
++                        [(code_point, code_point, value.decode())]
+                     continue
+ 
+                 # Range of code points?
+-                m = re.match('([0-9A-F]+)..([0-9A-F]+) +; +([a-zA-Z_]+) ', line)
++                m = re.match(b'([0-9A-F]+)..([0-9A-F]+) +; +([a-zA-Z_]+) ', line)
+                 if m:
+                     start_code_point = int(m.group(1), 16)
+                     end_code_point = int(m.group(2), 16)
+                     value = m.group(3)
+                     self.property_value_ranges += \
+-                        [(start_code_point, end_code_point, value)]
++                        [(start_code_point, end_code_point, value.decode())]
+ 
+         # Prepare a flat lookup table for fast access.
+         for cp in range(0, 0x110000):
+@@ -329,7 +329,7 @@ class UnicodeTrieGenerator(object):
+                 else:
+                     return idx
+ 
+-            return map(map_index, indexes)
++            return list(map(map_index, indexes))
+ 
+         # If self.BMP_data contains identical data blocks, keep the first one,
+         # remove duplicates and change the indexes in self.BMP_lookup to point to
+@@ -529,7 +529,7 @@ def get_grapheme_cluster_break_tests_as_UTF8(grapheme_break_test_file_name):
+                 # and test separately that we handle ill-formed UTF-8 sequences.
+                 if code_point >= 0xd800 and code_point <= 0xdfff:
+                     code_point = 0x200b
+-                code_point = ('\U%(cp)08x' % { 'cp': code_point }).decode('unicode_escape')
++                code_point = ('\\U%{cp}08x' % { 'cp': code_point }).decode('unicode_escape')
+                 as_UTF8_bytes = code_point.encode('utf8')
+                 as_UTF8_escaped = ''.join(['\\x%(byte)02x' % { 'byte': ord(byte) } for byte in as_UTF8_bytes])
+                 test += as_UTF8_escaped
+diff --git a/utils/SwiftBuildSupport.py b/utils/SwiftBuildSupport.py
+index d87121c..5631d3b 100644
+--- a/utils/SwiftBuildSupport.py
++++ b/utils/SwiftBuildSupport.py
+@@ -12,12 +12,16 @@
+ 
+ from __future__ import print_function
+ 
+-import ConfigParser
+ import os
+ import pipes
+ import subprocess
+ import sys
+ 
++if sys.version_info < (3, 0):
++    import ConfigParser
++else:
++    import configparser as ConfigParser
++
+ 
+ HOME = os.environ.get("HOME", "/")
+ 
+diff --git a/utils/apply-fixit-edits.py b/utils/apply-fixit-edits.py
+index 674ee77..65ff9f0 100755
+--- a/utils/apply-fixit-edits.py
++++ b/utils/apply-fixit-edits.py
+@@ -13,6 +13,8 @@
+ #===------------------------------------------------------------------------===#
+ 
+ 
++from __future__ import print_function
++
+ import subprocess
+ import json
+ import argparse
+@@ -31,7 +33,7 @@ def find_remap_files(path):
+ def apply_edits(path):
+     remap_files = find_remap_files(path)
+     if not remap_files:
+-        print "No remap files found"
++        print("No remap files found")
+         return 1;
+ 
+     edits_set = set()
+@@ -50,12 +52,12 @@ def apply_edits(path):
+     edits_per_file = {}
+     for ed in edits_set:
+         fname = ed[0]
+-        if not edits_per_file.has_key(fname):
++        if fname not in edits_per_file:
+             edits_per_file[fname] = []
+         edits_per_file[fname].append((ed[1], ed[2], ed[3]))
+     
+-    for fname, edits in edits_per_file.iteritems():
+-        print 'Updating', fname
++    for fname, edits in edits_per_file.items():
++        print('Updating', fname)
+         edits.sort(reverse=True)
+         file_data = open(fname).read()
+         for ed in edits:
+diff --git a/utils/benchmark/BST/bst.py b/utils/benchmark/BST/bst.py
+old mode 100644
+new mode 100755
+index 3427b26..d420d86
+--- a/utils/benchmark/BST/bst.py
++++ b/utils/benchmark/BST/bst.py
+@@ -1,7 +1,11 @@
+ #!/usr/bin/env python
+ #
+ # A binary search tree.
+-class BST:
++
++from __future__ import print_function
++
++
++class BST(object):
+     class Node:
+         left, right, key = None, None, 0
+     
+@@ -93,10 +97,10 @@ class BST:
+         self.visitInorderSubtree(f, node.right)
+ 
+ def printKey(key):
+-    print key,
++    print(key, end=' ')
+ 
+ def usage():
+-    print "Usage: bst <numkeys>"
++    print("Usage: bst <numkeys>")
+ 
+ if __name__ == "__main__":
+     import sys, lfsr
+@@ -109,8 +113,8 @@ if __name__ == "__main__":
+     for i in range(0,int(sys.argv[1])):
+         bst.insert(lfsr.randInt())
+     
+-    print "Size:", bst.size()
+-    print "Depth:", bst.depth()
+-    print "Range:", bst.minKey(), "-", bst.maxKey()
+-    print "Values:",
++    print("Size:", bst.size())
++    print("Depth:", bst.depth())
++    print("Range:", bst.minKey(), "-", bst.maxKey())
++    print("Values:", end=' ')
+     bst.visitInorder(printKey)
+diff --git a/utils/benchmark/BST/lfsr.py b/utils/benchmark/BST/lfsr.py
+index bfc7f1c..f1b3677 100644
+--- a/utils/benchmark/BST/lfsr.py
++++ b/utils/benchmark/BST/lfsr.py
+@@ -3,7 +3,11 @@
+ # This is just to drive benchmarks. I don't make any claim about its
+ # strength. According to Wikipedia, it has the maximal period for a
+ # 32-bit register.
+-class LFSR:
++
++from __future__ import print_function
++
++
++class LFSR(object):
+     def __init__(self):
+         # set the register to some seed
+         self.lfsr = 0xb78978e7
+@@ -26,4 +30,4 @@ if __name__ == "__main__":
+         r = lfsr.randInt()
+         assert r not in rands
+         rands.add(r)
+-        print r
++        print(r)
+diff --git a/utils/benchmark/Graph/generate-data.py b/utils/benchmark/Graph/generate-data.py
+old mode 100644
+new mode 100755
+index c8dac15..98ae767
+--- a/utils/benchmark/Graph/generate-data.py
++++ b/utils/benchmark/Graph/generate-data.py
+@@ -1,3 +1,6 @@
++#!/usr/bin/env python
++
++from __future__ import print_function
+ 
+ import pygraph.algorithms.generators as gen
+ import pygraph.algorithms.accessibility as acc
+@@ -7,14 +10,14 @@ graph = gen.generate(5000, 10000, weight_range=(50, 2000))
+ components = acc.connected_components(graph)
+ nodes = [g for g in graph if components[g] == 1]
+ 
+-print "GRAPH NODES"
++print("GRAPH NODES")
+ for n in graph.nodes():
+-    print n
+-print "GRAPH EDGES"
++    print(n)
++print("GRAPH EDGES")
+ for e in graph.edges():
+     if components[e[0]] == 1:
+         w = graph.edge_weight(e)
+-        print (e[0], e[1], w)
++        print((e[0], e[1], w))
+ 
+ # MST = minmax.minimal_spanning_tree(graph)
+ # print "MST NODES"
+diff --git a/utils/benchmark/Phonebook/Phonebook.py b/utils/benchmark/Phonebook/Phonebook.py
+index 6cf3ebe..5bc8893 100644
+--- a/utils/benchmark/Phonebook/Phonebook.py
++++ b/utils/benchmark/Phonebook/Phonebook.py
+@@ -33,7 +33,7 @@ for first in words:
+   for last in words:
+     Records.append(Record(first, last))
+ 
+-for i in xrange(100):
++for i in range(100):
+   y = Records[:]
+   y = sorted(y)
+   #for w in y:
+diff --git a/utils/benchmark/RC4/RC4.py b/utils/benchmark/RC4/RC4.py
+index de38b61..5515d1b 100644
+--- a/utils/benchmark/RC4/RC4.py
++++ b/utils/benchmark/RC4/RC4.py
+@@ -6,11 +6,11 @@ class RC4:
+     self.J = 0
+ 
+   def init(self, key):
+-    for i in xrange(256):
++    for i in range(256):
+       self.state[i] = i
+ 
+     j = 0
+-    for i in xrange(256):
++    for i in range(256):
+       K = ord(key[i % len(key)])
+       S = self.state[i]
+       j = (j + S + K) % 256
+@@ -19,15 +19,15 @@ class RC4:
+   def swapByIndex(self, i, j):
+     self.state[i], self.state[j] = self.state[j], self.state[i]
+ 
+-  def next(self):
++  def __next__(self):
+     self.I = (self.I + 1) % 256
+     self.J = (self.J + self.state[self.I]) % 256
+     self.swapByIndex(self.I, self.J)
+     return self.state[(self.state[self.I] + self.state[self.J]) % 256]
+ 
+   def encrypt(self, data):
+-    for i in xrange(len(data)):
+-      data[i] = data[i] ^ self.next()
++    for i in range(len(data)):
++      data[i] = data[i] ^ next(self)
+ 
+ 
+ def benchRC4_internal(messageLen, iterations):
+@@ -35,13 +35,13 @@ def benchRC4_internal(messageLen, iterations):
+   Key    = "This is my key"
+   LongData = [0] * messageLen
+ 
+-  for i in xrange(messageLen):
++  for i in range(messageLen):
+     LongData[i] = ord(Secret[i % len(Secret)])
+ 
+   Enc = RC4()
+   Enc.init(Key)
+ 
+-  for i in xrange(iterations):
++  for i in range(iterations):
+     Enc.encrypt(LongData)
+ 
+ benchRC4_internal(5000, 100000)
+diff --git a/utils/gyb.py b/utils/gyb.py
+index f0533fa..a6f938e 100755
+--- a/utils/gyb.py
++++ b/utils/gyb.py
+@@ -2,13 +2,21 @@
+ # GYB: Generate Your Boilerplate (improved names welcome; at least
+ # this one's short).  See -h output for instructions
+ 
++from __future__ import print_function
++
+ import re
+-from cStringIO import StringIO
+ import tokenize
+ import textwrap
+ from bisect import bisect
+ import os
+ 
++import sys
++if sys.version_info < (3, 0):
++    from cStringIO import StringIO
++    PY3 = False
++else:
++    from io import StringIO
++    PY3 = True
+ def getLineStarts(s):
+     """Return a list containing the start index of each line in s.
+ 
+@@ -30,12 +38,12 @@ def stripTrailingNL(s):
+ 
+ def splitLines(s):
+     """Split s into a list of lines, each of which has a trailing newline
+-    
++
+     If the lines are later concatenated, the result is s, possibly
+     with a single appended newline.
+     """
+     return [ l + '\n' for l in s.split('\n') ]
+-    
++
+ # text on a line up to the first '$$', '${', or '%%'
+ literalText = r'(?: [^$\n%] | \$(?![${]) | %(?!%) )*'
+ 
+@@ -54,7 +62,7 @@ tokenizeRE = re.compile(
+ # %-lines and %{...}-blocks
+     # \n? # absorb one preceding newline
+     ^
+-    (?: 
++    (?:
+       (?P<gybLines>
+         (?P<_indent> [\ \t]* % (?! [{%] ) [\ \t]* ) (?! [\ \t] | '''+linesClose+r''' ) .*
+         ( \n (?P=_indent) (?! '''+linesClose+r''' ) .* ) *
+@@ -74,7 +82,7 @@ tokenizeRE = re.compile(
+ 
+ # Literal text
+ | (?P<literal> '''+literalText+r'''
+-    (?: 
++    (?:
+       # newline that doesn't precede space+%
+       (?: \n (?! [\ \t]* %[^%] ) )
+       '''+literalText+r'''
+@@ -133,14 +141,15 @@ def tokenizePythonToUnmatchedCloseCurly(sourceText, start, lineStarts):
+                 if nesting < 0:
+                     return tokenPosToIndex(tokenStart, start, lineStarts)
+ 
+-    except tokenize.TokenError, (message, errorPos):
++    except tokenize.TokenError as xxx_todo_changeme:
++        (message, errorPos) = xxx_todo_changeme.args
+         return tokenPosToIndex(errorPos, start, lineStarts)
+ 
+     return len(sourceText)
+-    
++
+ def tokenizeTemplate(templateText):
+     r"""Given the text of a template, returns an iterator over
+-(tokenType,token,match) tuples.  
++    (tokenType,token,match) tuples.
+ 
+     **Note**: this is template syntax tokenization, not Python
+     tokenization.
+@@ -217,12 +226,12 @@ def tokenizeTemplate(templateText):
+ 
+     while pos < end:
+         m = tokenizeRE.match(templateText, pos, end)
+-        
++
+         # pull out the one matched key (ignoring internal patterns starting with _)
+         ((kind, text), ) = (
+-            (kind,text) for (kind,text) in m.groupdict().items() 
++            (kind,text) for (kind,text) in m.groupdict().items()
+             if text is not None and kind[0] != '_')
+-                
++
+         if kind in ('literal', 'symbol'):
+             if len(savedLiteral) == 0:
+                 literalFirstMatch = m
+@@ -237,7 +246,7 @@ def tokenizeTemplate(templateText):
+             # Then yield the thing we found.  If we get a reply, it's
+             # the place to resume tokenizing
+             pos = yield kind, text, m
+-        
++
+         # If we were not sent a new position by our client, resume
+         # tokenizing at the end of this match.
+         if pos is None:
+@@ -301,15 +310,19 @@ def splitGybLines(sourceLines):
+ 
+     dedents = 0
+     try:
+-        for tokenKind, tokenText, tokenStart, (tokenEndLine, tokenEndCol), lineText \
+-            in tokenize.generate_tokens(sourceLines.__iter__().next):
++        if PY3:
++            tokenize_generation = tokenize.generate_tokens(sourceLines.__iter__().__next__)
++        else:
++            tokenize_generation = tokenize.generate_tokens(sourceLines.__iter__().next)
+ 
+-            if tokenKind in (tokenize.COMMENT, tokenize.ENDMARKER): 
++        for tokenKind, tokenText, tokenStart, (tokenEndLine, tokenEndCol), lineText in tokenize_generation:
++
++            if tokenKind in (tokenize.COMMENT, tokenize.ENDMARKER):
+                 continue
+ 
+             if tokenText == '\n' and lastTokenText == ':':
+                 unmatchedIndents.append(tokenEndLine)
+-                
++
+             # The tokenizer appends dedents at EOF; don't consider
+             # those as matching indentations.  Instead just save them
+             # up...
+@@ -319,10 +332,11 @@ def splitGybLines(sourceLines):
+             if tokenKind != tokenize.DEDENT and dedents > 0:
+                 unmatchedIndents = unmatchedIndents[:-dedents]
+                 dedents = 0
+-                
++
+             lastTokenText,lastTokenKind = tokenText,tokenKind
+ 
+-    except tokenize.TokenError, (message, errorPos):
++    except tokenize.TokenError as xxx_todo_changeme1:
++        (message, errorPos) = xxx_todo_changeme1.args
+         return [] # Let the later compile() call report the error
+ 
+     if lastTokenText == ':':
+@@ -344,8 +358,12 @@ def codeStartsWithDedentKeyword(sourceLines):
+     True
+     """
+     tokenText = None
+-    for tokenKind, tokenText, _, _, _ \
+-        in tokenize.generate_tokens(sourceLines.__iter__().next):
++    if PY3:
++        tokenize_generation = tokenize.generate_tokens(sourceLines.__iter__().__next__)
++    else:
++        tokenize_generation = tokenize.generate_tokens(sourceLines.__iter__().next)
++
++    for tokenKind, tokenText, _, _, _ in tokenize_generation:
+ 
+         if tokenKind != tokenize.COMMENT and tokenText.strip() != '':
+             break
+@@ -371,11 +389,11 @@ class ParseContext:
+ 
+     def posToLine(self, pos):
+         return bisect(self.lineStarts, pos) - 1
+-            
++
+     def tokenGenerator(self, baseTokens):
+         r""" Given an iterator over (kind, text, match) triples (see
+         tokenizeTemplate above), return a refined iterator over
+-        tokenKinds.  
++        tokenKinds.
+ 
+         Among other adjustments to the elements found by baseTokens,
+         this refined iterator tokenizes python code embedded in
+@@ -446,7 +464,7 @@ class ParseContext:
+         for self.tokenKind, self.tokenText, self.tokenMatch in baseTokens:
+             kind = self.tokenKind
+             self.codeText = None
+-            
++
+             # Do we need to close the current lines?
+             self.closeLines = kind == 'gybLinesClose'
+ 
+@@ -474,17 +492,17 @@ class ParseContext:
+                 baseTokens.send(nextPos)
+ 
+             elif kind == 'gybLines':
+-                
++
+                 self.codeStartLine = self.posToLine(self.tokenMatch.start('gybLines'))
+                 codeStartPos = self.tokenMatch.end('_indent')
+                 indentation = self.tokenMatch.group('_indent')
+ 
+                 # Strip off the leading indentation and %-sign
+                 sourceLines = re.split(
+-                    '^' + re.escape(indentation), 
+-                    self.tokenMatch.group('gybLines')+'\n', 
++                    '^' + re.escape(indentation),
++                    self.tokenMatch.group('gybLines')+'\n',
+                     flags=re.MULTILINE)[1:]
+-                
++
+                 if codeStartsWithDedentKeyword(sourceLines):
+                     self.closeLines = True
+ 
+@@ -537,10 +555,10 @@ class ExecutionContext:
+                     # and try again
+                     self.appendText(text[i + 1:], file, line)
+                     return
+-                    
++
+         self.resultText.append(text)
+         self.lastFileLine = (file, line + text.count('\n'))
+-        
++
+ class ASTNode(object):
+     """Abstract base class for template AST nodes"""
+     def __init__(self):
+@@ -557,7 +575,7 @@ class ASTNode(object):
+             return ' []'
+ 
+         return '\n'.join(
+-            ['', indent + '['] 
++            ['', indent + '[']
+             + [ x.__str__(indent + 4*' ') for x in self.children ]
+             + [indent + ']'])
+ 
+@@ -633,10 +651,10 @@ class Code(ASTNode):
+ 
+             if context.tokenKind == 'gybLinesClose':
+                 context.nextToken()
+-        
++
+         if context.tokenKind == 'gybLines':
+             source, sourceLineCount = accumulateCode()
+-            
++
+             # Only handle a substitution as part of this code block if
+             # we don't already have some %-lines.
+         elif context.tokenKind == 'gybBlockOpen':
+@@ -652,7 +670,7 @@ class Code(ASTNode):
+     def execute(self, context):
+         # Save __children__ from the local bindings
+         saveChildren = context.localBindings.get('__children__')
+-        # Execute the code with our __children__ in scope 
++        # Execute the code with our __children__ in scope
+         context.localBindings['__children__'] = self.children
+         result = eval(self.code, context.localBindings)
+         assert context.localBindings['__children__'] is self.children
+@@ -676,7 +694,7 @@ class Code(ASTNode):
+ 
+ def parseTemplate(filename, text = None):
+     r"""Return an AST corresponding to the given template file.
+-    
++
+     If text is supplied, it is assumed to be the contents of the file,
+     as a string.
+ 
+@@ -967,11 +985,11 @@ def main():
+ 
+     parser = argparse.ArgumentParser(
+         formatter_class=argparse.RawDescriptionHelpFormatter,
+-        description='Generate Your Boilerplate!', epilog='''    
++        description='Generate Your Boilerplate!', epilog='''
+     A GYB template consists of the following elements:
+ 
+       - Literal text which is inserted directly into the output
+-    
++
+       - %% or $$ in literal text, which insert literal '%' and '$'
+         symbols respectively.
+ 
+@@ -999,7 +1017,7 @@ def main():
+           - Hello -
+         %{
+              x = 42
+-             def succ(a): 
++             def succ(a):
+                  return a+1
+         }%
+ 
+@@ -1039,7 +1057,7 @@ def main():
+     parser.add_argument('--verbose-test', action='store_true', default=False, help='Run a verbose self-test')
+     parser.add_argument('--dump', action='store_true', default=False, help='Dump the parsed template to stdout')
+     parser.add_argument('--line-directive', default='// ###line', help='Line directive prefix; empty => no line markers')
+-    
++
+ 
+     args = parser.parse_args(sys.argv[1:])
+ 
+@@ -1047,17 +1065,16 @@ def main():
+         import doctest
+         if doctest.testmod(verbose=args.verbose_test).failed:
+             exit(1)
+-        
++
+     bindings = dict( x.split('=', 1) for x in args.defines )
+     ast = parseTemplate(args.file.name, args.file.read())
+     if args.dump:
+-        print ast
+-        
++        print(ast)
++
+     # Allow the template to import .py files from its own directory
+     sys.path = [os.path.split(args.file.name)[0] or '.'] + sys.path
+-    
++
+     args.target.write(executeTemplate(ast, args.line_directive, **bindings))
+ 
+ if __name__ == '__main__':
+     main()
+-    
+diff --git a/utils/pass-pipeline/scripts/pipelines_build_script.py b/utils/pass-pipeline/scripts/pipelines_build_script.py
+index 1adee8b..742007a 100755
+--- a/utils/pass-pipeline/scripts/pipelines_build_script.py
++++ b/utils/pass-pipeline/scripts/pipelines_build_script.py
+@@ -41,7 +41,7 @@ def run_build_script_with_data_file(build_script, data_file, verbose=False):
+             sys.stdout.write(" Failure:\n")
+ 
+ def build_disable_slice_pipelines(**kwargs):
+-    pipeline_range = range(len(PIPELINES))
++    pipeline_range = list(range(len(PIPELINES)))
+ 
+     def get_pipeline_args(script, iter):
+         result = [script]
+diff --git a/utils/protocol_graph.py b/utils/protocol_graph.py
+index 9e39a69..4fb86b7 100644
+--- a/utils/protocol_graph.py
++++ b/utils/protocol_graph.py
+@@ -139,17 +139,17 @@ clusterEdges = set(
+     for s in elements 
+     for t in graph[s] if t in elements)
+ 
+-print 'digraph ProtocolHierarchies {'
+-print '  mclimit = 100; ranksep=1.5; ' # ; packmode="array1"
+-print '  edge [dir="back"];'
+-print '  node [shape = box, fontname = Helvetica, fontsize = 10];'
++print('digraph ProtocolHierarchies {')
++print('  mclimit = 100; ranksep=1.5; ') # ; packmode="array1"
++print('  edge [dir="back"];')
++print('  node [shape = box, fontname = Helvetica, fontsize = 10];')
+ 
+ for c in sorted(clusters):
+-    print '  subgraph "cluster_%s" {' % c
++    print('  subgraph "cluster_%s" {' % c)
+     for (s, t) in sorted(clusterEdges):
+         if s in clusters[c]:
+-            print '%s -> %s [weight=100];' % (s, t)
+-    print '}'
++            print('%s -> %s [weight=100];' % (s, t))
++    print('}')
+ 
+ for node in sorted(graph.keys()):
+     requirements = body.get(node, [])
+@@ -164,12 +164,12 @@ for node in sorted(graph.keys()):
+         divider,
+         '\n'.join('<TR><TD>%s</TD></TR>' % g for g in generics)))
+     
+-    print interpolate('    %(node)s [style = %(style)s, label=<%(label)s>]')
++    print(interpolate('    %(node)s [style = %(style)s, label=<%(label)s>]'))
+     
+ for (parent, children) in sorted(graph.items()):
+-    print '    %s -> {' % parent,
+-    print '; '.join(
+-        sorted(child for child in children if not (parent, child) in clusterEdges)),
+-    print '}'
++    print('    %s -> {' % parent, end=' ')
++    print('; '.join(
++        sorted(child for child in children if not (parent, child) in clusterEdges)), end=' ')
++    print('}')
+ 
+-print '}'    
++print('}')    
+diff --git a/utils/swift-bench.py b/utils/swift-bench.py
+index 893ddbc..7801143 100644
+--- a/utils/swift-bench.py
++++ b/utils/swift-bench.py
+@@ -268,7 +268,7 @@ extern "C" int64_t opaqueGetInt64(int64_t x) { return x; }
+         spent = int(execTime) / 1000000 # Convert ns to ms
+         if spent <= self.minIterTime:
+           scale *= 2
+-        if scale > sys.maxint:
++        if scale > sys.maxsize:
+           return (0, 0)
+       except subprocess.CalledProcessError as e:
+         r = e.output
+-- 
+2.6.3
+
