@@ -1,4 +1,4 @@
-From c8361fb1ec8aafdc39d84cfe970f63ff5fc3bb9c Mon Sep 17 00:00:00 2001
+From dbf8faa607b462c1febef418e8c414c110c82c45 Mon Sep 17 00:00:00 2001
 From: Alex Chan <alex@alexwlchan.net>
 Date: Thu, 3 Dec 2015 20:17:19 +0000
 Subject: [PATCH] Miscellaneous fixes for Python 3 compatibility
@@ -22,10 +22,11 @@ Subject: [PATCH] Miscellaneous fixes for Python 3 compatibility
  utils/benchmark/Phonebook/Phonebook.py             |   2 +-
  utils/benchmark/RC4/RC4.py                         |  14 +--
  utils/gyb.py                                       | 103 ++++++++++++---------
+ utils/line-directive                               |   2 +-
  .../scripts/pipelines_build_script.py              |   2 +-
  utils/protocol_graph.py                            |  26 +++---
  utils/swift-bench.py                               |   2 +-
- 21 files changed, 159 insertions(+), 113 deletions(-)
+ 22 files changed, 160 insertions(+), 114 deletions(-)
  mode change 100644 => 100755 utils/benchmark/BST/bst.py
  mode change 100644 => 100755 utils/benchmark/Graph/generate-data.py
 
@@ -846,6 +847,19 @@ index f0533fa..a6f938e 100755
  if __name__ == '__main__':
      main()
 -    
+diff --git a/utils/line-directive b/utils/line-directive
+index 2ba3682..9958f00 100755
+--- a/utils/line-directive
++++ b/utils/line-directive
+@@ -66,7 +66,7 @@ def run():
+             '^(.*)(: file| at|#[0-9]+:) (' + '|'.join(re.escape(s) for s in sources) + ')(, line |:)([0-9]+)(.*)')
+ 
+         while True:
+-            line = command.stdout.readline()
++            line = command.stdout.readline().decode()
+             if line == '': break
+             l = line.rstrip('\n')
+             m = error_pattern.match(l)
 diff --git a/utils/pass-pipeline/scripts/pipelines_build_script.py b/utils/pass-pipeline/scripts/pipelines_build_script.py
 index 1adee8b..742007a 100755
 --- a/utils/pass-pipeline/scripts/pipelines_build_script.py
