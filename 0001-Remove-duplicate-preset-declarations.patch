@@ -1,0 +1,142 @@
+From 710aea2528b71145a2c686e16bbc1c56df38bd83 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Sat, 5 Dec 2015 15:11:24 -0500
+Subject: [PATCH] Remove duplicate preset declarations
+
+Python 3's
+[configparser](https://docs.python.org/3/library/configparser.html) does
+not parse in the same way that Python 2's did. Specifically, Python 3's
+does not allow duplicate sections (or in Swift parlance presets).
+
+Python 3 does provide a "strict" property that can be sent to the
+constructor to return to the behavior of Python 2 (e.g.,  `config =
+ConfigParser.SafeConfigParser(substitutions, allow_no_value=True,
+strict=False)`). However, this provides it's own set of complications in
+that the Python 2 version of the constructor does not.
+
+Therefore, instead of having a conditional in the runtime to detect
+which version of Python and build the correct initializer this patch
+normalizes the presets configuration file such that there are no more
+duplicates. This should work in both Python 2 and 3.
+
+Also worth noting: this patch is insufficient by itself to make the
+build scripts work with Python 3. This patch is written with the
+"Incremental Development" theory in mind and in preparation for other
+patches currently in progress.
+---
+ utils/build-presets.ini | 82 ++++++++++++++++++++++---------------------------
+ 1 file changed, 36 insertions(+), 46 deletions(-)
+
+diff --git a/utils/build-presets.ini b/utils/build-presets.ini
+index 6dc6d24..46b6095 100644
+--- a/utils/build-presets.ini
++++ b/utils/build-presets.ini
+@@ -52,52 +52,6 @@ installable-package=%(installable_package)s
+ # If someone uses this for incremental builds, force reconfiguration.
+ reconfigure
+ 
+-
+-[preset: buildbot,tools=RA,stdlib=DA]
+-mixin-preset=
+-    mixin_buildbot_trunk_base
+-    mixin_buildbot_install_components
+-
+-# Build Release without debug info, because it is faster to build.
+-release
+-assertions
+-
+-dash-dash
+-
+-swift-stdlib-build-type=Debug
+-swift-stdlib-enable-assertions=true
+-
+-[preset: buildbot,tools=RA,stdlib=RD]
+-mixin-preset=
+-    mixin_buildbot_trunk_base
+-    mixin_buildbot_install_components
+-
+-# Build Release without debug info, because it is faster to build.
+-release
+-assertions
+-
+-dash-dash
+-
+-swift-stdlib-build-type=RelWithDebInfo
+-swift-stdlib-enable-assertions=false
+-
+-[preset: buildbot,tools=RA,stdlib=RDA]
+-mixin-preset=
+-    mixin_buildbot_trunk_base
+-    mixin_buildbot_install_components
+-
+-# Build Release without debug info, because it is faster to build.
+-release
+-assertions
+-
+-dash-dash
+-
+-swift-stdlib-build-type=RelWithDebInfo
+-swift-stdlib-enable-assertions=true
+-
+-# This is a release non-incremental build. Run sil-verify-all.
+-sil-verify-all
+-
+ [preset: buildbot,tools=RA,stdlib=RD,test=no]
+ mixin-preset=
+     mixin_buildbot_trunk_base
+@@ -178,16 +132,52 @@ swift-stdlib-enable-assertions=true
+ 
+ [preset: buildbot,tools=RA,stdlib=DA]
+ mixin-preset=
++    mixin_buildbot_trunk_base
++    mixin_buildbot_install_components
+     mixin_buildbot_tools_RA_stdlib_DA
+ 
++# Build Release without debug info, because it is faster to build.
++release
++assertions
++
++dash-dash
++
++swift-stdlib-build-type=Debug
++swift-stdlib-enable-assertions=true
++
+ [preset: buildbot,tools=RA,stdlib=RD]
+ mixin-preset=
++    mixin_buildbot_trunk_base
++    mixin_buildbot_install_components
+     mixin_buildbot_tools_RA_stdlib_RD
+ 
++# Build Release without debug info, because it is faster to build.
++release
++assertions
++
++dash-dash
++
++swift-stdlib-build-type=RelWithDebInfo
++swift-stdlib-enable-assertions=false
++
+ [preset: buildbot,tools=RA,stdlib=RDA]
+ mixin-preset=
++    mixin_buildbot_trunk_base
++    mixin_buildbot_install_components
+     mixin_buildbot_tools_RA_stdlib_RDA
+ 
++# Build Release without debug info, because it is faster to build.
++release
++assertions
++
++dash-dash
++
++swift-stdlib-build-type=RelWithDebInfo
++swift-stdlib-enable-assertions=true
++
++# This is a release non-incremental build. Run sil-verify-all.
++sil-verify-all
++
+ [preset: buildbot,tools=RA,stdlib=DA,NotvOS]
+ mixin-preset=
+     mixin_buildbot_tools_RA_stdlib_DA
+-- 
+2.6.3
+
