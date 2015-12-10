@@ -1,0 +1,25 @@
+diff --git a/cmake/modules/AddSwift.cmake b/cmake/modules/AddSwift.cmake
+index c523924..a5accca 100644
+--- a/cmake/modules/AddSwift.cmake
++++ b/cmake/modules/AddSwift.cmake
+@@ -150,7 +150,7 @@ function(_add_variant_link_flags
+       result)
+ 
+   if("${sdk}" STREQUAL "LINUX")
+-    list(APPEND result "-lpthread" "-ldl")
++    list(APPEND result "-pthread" "-lpthread" "-ldl")
+   elseif("${sdk}" STREQUAL "FREEBSD")
+     # No extra libraries required.
+   else()
+diff --git a/stdlib/public/core/CMakeLists.txt b/stdlib/public/core/CMakeLists.txt
+index 5e44d5c..2de407a 100644
+--- a/stdlib/public/core/CMakeLists.txt
++++ b/stdlib/public/core/CMakeLists.txt
+@@ -162,6 +162,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   find_package(BSD REQUIRED)
+   list(APPEND swift_core_private_link_libraries
+       ${BSD_LIBRARIES})
++  list(APPEND swift_core_private_link_libraries "-lpthread" "-ldl")
+ endif()
+ 
+ option(SWIFT_CHECK_ESSENTIAL_STDLIB

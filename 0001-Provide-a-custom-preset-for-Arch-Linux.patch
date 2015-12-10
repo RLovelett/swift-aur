@@ -1,0 +1,78 @@
+From 10078022a0d6e78f48e56fe6fca250eec8e0be07 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Wed, 23 Dec 2015 12:42:08 -0500
+Subject: [PATCH] Provide a custom preset for Arch Linux
+
+Mostly this is the same as the other Linux build bot. Just enables
+verbose building by default. Since Arch Linux seems to have *a lot* of
+compilation issues.
+
+Disables all the tests too
+---
+ utils/build-presets.ini | 50 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/utils/build-presets.ini b/utils/build-presets.ini
+index d5f94c7..85d7066 100644
+--- a/utils/build-presets.ini
++++ b/utils/build-presets.ini
+@@ -482,6 +482,56 @@ mixin-preset=buildbot_linux
+ [preset: buildbot_linux_1404]
+ mixin-preset=buildbot_linux
+ 
++# Arch Linux preset for backwards compat and future customizations.
++[preset: buildbot_arch_linux]
++mixin-preset=mixin_lightweight_assertions
++build-subdir=buildbot_linux
++
++llbuild
++swiftpm
++xctest
++lldb
++release
++test
++validation-test
++foundation
++
++dash-dash
++
++install-swift=1
++install-lldb=1
++install-llbuild=1
++install-swiftpm=1
++install-xctest=1
++install-foundation=1
++# Allow the install prefix to be configured
++install-prefix=/%(PREFIX)s
++swift-install-components=compiler;clang-builtin-headers;stdlib;sdk-overlay;license
++build-swift-static-stdlib=1
++
++# Path to the root of the installation filesystem
++install-destdir=%(DESTDIR)s
++
++skip-test-cmark=1
++skip-test-lldb=1
++skip-test-swift=1
++skip-test-llbuild=1
++skip-test-swiftpm=1
++skip-test-xctest=1
++skip-test-foundation=1
++skip-test-osx=1
++skip-test-ios=1
++skip-test-ios-simulator=1
++skip-test-tvos=1
++skip-test-tvos-simulator=1
++skip-test-watchos=1
++skip-test-watchos-simulator=1
++skip-test-validation=1
++skip-test-optimized=1
++
++reconfigure=1
++verbose-build=1
++
+ #===------------------------------------------------------------------------===#
+ # OS X Package Builders
+ #===------------------------------------------------------------------------===#
+-- 
+2.6.4
+

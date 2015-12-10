@@ -1,0 +1,38 @@
+diff --git a/cmake/modules/LLDBConfig.cmake b/cmake/modules/LLDBConfig.cmake
+index b81a9ac..fef4703 100644
+--- a/cmake/modules/LLDBConfig.cmake
++++ b/cmake/modules/LLDBConfig.cmake
+@@ -182,6 +182,7 @@ if (NOT LLDB_DISABLE_PYTHON)
+       add_definitions( -DLLDB_PYTHON_HOME="${LLDB_PYTHON_HOME}" )
+     endif()
+   else()
++    set(Python_ADDITIONAL_VERSIONS 2.7)
+     find_package(PythonLibs REQUIRED)
+   endif()
+   
+diff --git a/cmake/modules/LLDBStandalone.cmake b/cmake/modules/LLDBStandalone.cmake
+index 756484f..493c135 100644
+--- a/cmake/modules/LLDBStandalone.cmake
++++ b/cmake/modules/LLDBStandalone.cmake
+@@ -61,7 +61,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+   include(HandleLLVMOptions)
+ 
+   if (PYTHON_EXECUTABLE STREQUAL "")
+-    set(Python_ADDITIONAL_VERSIONS 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6 2.5)
++    set(Python_ADDITIONAL_VERSIONS 2.7 3.5 3.4 3.3 3.2 3.1 3.0 2.6 2.5)
+     include(FindPythonInterp)
+     if( NOT PYTHONINTERP_FOUND )
+       message(FATAL_ERROR
+diff --git a/scripts/Python/modules/readline/readline.cpp b/scripts/Python/modules/readline/readline.cpp
+index d66ccf4..72e369c 100644
+--- a/scripts/Python/modules/readline/readline.cpp
++++ b/scripts/Python/modules/readline/readline.cpp
+@@ -67,7 +67,7 @@ initreadline(void)
+ #ifndef LLDB_DISABLE_LIBEDIT
+     PyOS_ReadlineFunctionPointer = simple_readline;
+ #endif
+-    Py_InitModule4(
++    Py_InitModule4_64(
+         "readline",
+         moduleMethods,
+         moduleDocumentation,

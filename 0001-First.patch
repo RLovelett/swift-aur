@@ -1,0 +1,25 @@
+From 7277cdb55109c18f6fd6f0e66a108fb15290f137 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Wed, 23 Dec 2015 11:49:19 -0500
+Subject: [PATCH] First
+
+---
+ lib/script.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/script.py b/lib/script.py
+index 4a10e2f..4b6d4c7 100644
+--- a/lib/script.py
++++ b/lib/script.py
+@@ -189,7 +189,7 @@ rule Assemble
+ 
+         link_command = """
+ rule Link
+-    command = mkdir -p `dirname $out`; ${CLANG} ${TARGET_LDFLAGS} $flags ${VERBOSE_FLAGS} $start $in $end -o $out""" 
++    command = mkdir -p `dirname $out`; echo $flags; echo ${EXTRA_LD_FLAGS}; ${CLANG} $flags ${TARGET_LDFLAGS} ${VERBOSE_FLAGS} $start $in $end -o $out"""
+         if Configuration.current.verbose:
+             link_command += "-Xlinker --verbose"
+         link_command += """
+-- 
+2.6.4
+

@@ -1,0 +1,371 @@
+From 7eaa0fc69d89af4dbf0e19a2413186dab459ca15 Mon Sep 17 00:00:00 2001
+From: Emati Mitame <GitCommits@mita.me>
+Date: Thu, 3 Dec 2015 19:40:23 +0000
+Subject: [PATCH] Change shebangs to specify python2 instead of system default
+
+---
+ docs/scripts/ns-html2rst                                    | 2 +-
+ test/Driver/Dependencies/Inputs/fail.py                     | 2 +-
+ test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py   | 2 +-
+ test/Driver/Dependencies/Inputs/fake-build-whole-module.py  | 2 +-
+ test/Driver/Dependencies/Inputs/modify-non-primary-files.py | 2 +-
+ test/Driver/Dependencies/Inputs/touch.py                    | 2 +-
+ test/Driver/Dependencies/Inputs/update-dependencies-bad.py  | 2 +-
+ test/Driver/Dependencies/Inputs/update-dependencies.py      | 2 +-
+ test/Inputs/getmtime.py                                     | 2 +-
+ test/Serialization/Inputs/binary_sub.py                     | 2 +-
+ utils/apply-fixit-edits.py                                  | 2 +-
+ utils/build-script                                          | 2 +-
+ utils/cmpcodesize/cmpcodesize.py                            | 2 +-
+ utils/cmpcodesize/cmpcodesize/compare.py                    | 1 +
+ utils/cmpcodesize/cmpcodesize/main.py                       | 2 +-
+ utils/create-filecheck-test.py                              | 2 +-
+ utils/gyb                                                   | 2 +-
+ utils/gyb.py                                                | 2 +-
+ utils/line-directive                                        | 2 +-
+ utils/omit-needless-words.py                                | 2 +-
+ utils/pass-pipeline/scripts/pipeline_generator.py           | 2 +-
+ utils/pass-pipeline/scripts/pipelines_build_script.py       | 2 +-
+ utils/pre-commit-benchmark                                  | 2 +-
+ utils/pygments/swift.py                                     | 2 +-
+ utils/recursive-lipo                                        | 2 +-
+ utils/resolve-crashes.py                                    | 2 +-
+ utils/sil-opt-verify-all-modules.py                         | 2 +-
+ utils/split_file.py                                         | 2 +-
+ utils/submit-benchmark-results                              | 2 +-
+ utils/swift-bench.py                                        | 2 +-
+ utils/update-checkout                                       | 2 +-
+ utils/viewcfg                                               | 2 +-
+ validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py   | 2 +-
+ 33 files changed, 33 insertions(+), 32 deletions(-)
+
+diff --git a/docs/scripts/ns-html2rst b/docs/scripts/ns-html2rst
+index bc5ec84..27d928a 100755
+--- a/docs/scripts/ns-html2rst
++++ b/docs/scripts/ns-html2rst
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ from __future__ import print_function
+ 
+ import sys, re, subprocess
+diff --git a/test/Driver/Dependencies/Inputs/fail.py b/test/Driver/Dependencies/Inputs/fail.py
+index 95c72f8..4eb07f4 100755
+--- a/test/Driver/Dependencies/Inputs/fail.py
++++ b/test/Driver/Dependencies/Inputs/fail.py
+@@ -1,3 +1,3 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ exit(1)
+diff --git a/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py b/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
+index 58072fa..77d9c1e 100755
+--- a/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
++++ b/test/Driver/Dependencies/Inputs/fake-build-for-bitcode.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # Emulates the frontend of an -embed-bitcode job. That means we have to handle
+ # -emit-bc and -c actions.
+diff --git a/test/Driver/Dependencies/Inputs/fake-build-whole-module.py b/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
+index 22b9388..fdad101 100755
+--- a/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
++++ b/test/Driver/Dependencies/Inputs/fake-build-whole-module.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # Emulates the frontend of a -whole-module-optimization compilation.
+ 
+diff --git a/test/Driver/Dependencies/Inputs/modify-non-primary-files.py b/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
+index 4866a8d..bfbdb18 100755
+--- a/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
++++ b/test/Driver/Dependencies/Inputs/modify-non-primary-files.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # modify-non-primary-files.py simulates a build where the user is modifying the
+ # source files during compilation.
+diff --git a/test/Driver/Dependencies/Inputs/touch.py b/test/Driver/Dependencies/Inputs/touch.py
+index cf750c3..49ce7b1 100755
+--- a/test/Driver/Dependencies/Inputs/touch.py
++++ b/test/Driver/Dependencies/Inputs/touch.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # Like /bin/touch, but takes a time using the LLVM epoch.
+ 
+diff --git a/test/Driver/Dependencies/Inputs/update-dependencies-bad.py b/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
+index b427b50..d75075c 100755
+--- a/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
++++ b/test/Driver/Dependencies/Inputs/update-dependencies-bad.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # Fails if the input file is named "bad.swift"; otherwise dispatches to
+ # update-dependencies.py.
+diff --git a/test/Driver/Dependencies/Inputs/update-dependencies.py b/test/Driver/Dependencies/Inputs/update-dependencies.py
+index 0ab62ee..f4f211f 100755
+--- a/test/Driver/Dependencies/Inputs/update-dependencies.py
++++ b/test/Driver/Dependencies/Inputs/update-dependencies.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # update-dependencies.py simulates a Swift compilation for the purposes of
+ # dependency analysis. That means it has two tasks:
+diff --git a/test/Inputs/getmtime.py b/test/Inputs/getmtime.py
+index 6791b7b..ede1a48 100755
+--- a/test/Inputs/getmtime.py
++++ b/test/Inputs/getmtime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ from __future__ import print_function
+ 
+diff --git a/test/Serialization/Inputs/binary_sub.py b/test/Serialization/Inputs/binary_sub.py
+index f3f84eb..79ba2d7 100755
+--- a/test/Serialization/Inputs/binary_sub.py
++++ b/test/Serialization/Inputs/binary_sub.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import sys
+ 
+diff --git a/utils/apply-fixit-edits.py b/utils/apply-fixit-edits.py
+index 6d032b2..1192315 100755
+--- a/utils/apply-fixit-edits.py
++++ b/utils/apply-fixit-edits.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ #===--- apply-fixit-edits.py - Tool for applying edits from .remap files ---===#
+ #
+diff --git a/utils/build-script b/utils/build-script
+index 770350f..c0f87bb 100755
+--- a/utils/build-script
++++ b/utils/build-script
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ #===--- build-script - The ultimate tool for building Swift ----------------===#
+ #
+ ## This source file is part of the Swift.org open source project
+diff --git a/utils/cmpcodesize/cmpcodesize.py b/utils/cmpcodesize/cmpcodesize.py
+index 0390af7..0c3016d 100755
+--- a/utils/cmpcodesize/cmpcodesize.py
++++ b/utils/cmpcodesize/cmpcodesize.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import cmpcodesize
+ 
+diff --git a/utils/cmpcodesize/cmpcodesize/compare.py b/utils/cmpcodesize/cmpcodesize/compare.py
+index 9004e5f..d8208d7 100644
+--- a/utils/cmpcodesize/cmpcodesize/compare.py
++++ b/utils/cmpcodesize/cmpcodesize/compare.py
+@@ -1,3 +1,4 @@
++#!/usr/bin/env python2
+ from __future__ import print_function
+ 
+ import re
+diff --git a/utils/cmpcodesize/cmpcodesize/main.py b/utils/cmpcodesize/cmpcodesize/main.py
+index 0ba3423..c35c68b 100644
+--- a/utils/cmpcodesize/cmpcodesize/main.py
++++ b/utils/cmpcodesize/cmpcodesize/main.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ from __future__ import print_function
+ 
+diff --git a/utils/create-filecheck-test.py b/utils/create-filecheck-test.py
+index d6cfc2c..f8df8a6 100755
+--- a/utils/create-filecheck-test.py
++++ b/utils/create-filecheck-test.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # The following script takes as input a SIL fragment and changes all
+ # SSA variables into FileCheck variables. This significantly reduces
+diff --git a/utils/gyb b/utils/gyb
+index fcbceab..3110053 100755
+--- a/utils/gyb
++++ b/utils/gyb
+@@ -1,3 +1,3 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ import gyb
+ gyb.main()
+diff --git a/utils/gyb.py b/utils/gyb.py
+index b26d68f..720c534 100755
+--- a/utils/gyb.py
++++ b/utils/gyb.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ # GYB: Generate Your Boilerplate (improved names welcome; at least
+ # this one's short).  See -h output for instructions
+ 
+diff --git a/utils/line-directive b/utils/line-directive
+index 0f62f85..e89015b 100755
+--- a/utils/line-directive
++++ b/utils/line-directive
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ #convert line numbers in error messages according to "line directive" comments
+ import sys
+ import re
+diff --git a/utils/omit-needless-words.py b/utils/omit-needless-words.py
+index 91d3e7f..7e328dc 100755
+--- a/utils/omit-needless-words.py
++++ b/utils/omit-needless-words.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # This tool helps assess the impact of automatically applying
+ # heuristics that omit 'needless' words from APIs imported from Clang
+diff --git a/utils/pass-pipeline/scripts/pipeline_generator.py b/utils/pass-pipeline/scripts/pipeline_generator.py
+index befbd34..b80faaa 100755
+--- a/utils/pass-pipeline/scripts/pipeline_generator.py
++++ b/utils/pass-pipeline/scripts/pipeline_generator.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import os
+ import sys
+diff --git a/utils/pass-pipeline/scripts/pipelines_build_script.py b/utils/pass-pipeline/scripts/pipelines_build_script.py
+index 1adee8b..2f8095d 100755
+--- a/utils/pass-pipeline/scripts/pipelines_build_script.py
++++ b/utils/pass-pipeline/scripts/pipelines_build_script.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import os
+ import sys
+diff --git a/utils/pre-commit-benchmark b/utils/pre-commit-benchmark
+index be19b6c..9201845 100755
+--- a/utils/pre-commit-benchmark
++++ b/utils/pre-commit-benchmark
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # Note: it doesn't matter what directory you invoke this in; it uses
+ # your SWIFT_BUILD_ROOT and SWIFT_SOURCE_ROOT settings, just like
+diff --git a/utils/pygments/swift.py b/utils/pygments/swift.py
+index c8d146a..bfdbaa0 100644
+--- a/utils/pygments/swift.py
++++ b/utils/pygments/swift.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import re
+ 
+diff --git a/utils/recursive-lipo b/utils/recursive-lipo
+index ea96bf9..65de896 100755
+--- a/utils/recursive-lipo
++++ b/utils/recursive-lipo
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ from __future__ import print_function
+ 
+diff --git a/utils/resolve-crashes.py b/utils/resolve-crashes.py
+index c6c7434..77d61a8 100755
+--- a/utils/resolve-crashes.py
++++ b/utils/resolve-crashes.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # A small utility to take the output of a Swift validation test run
+ # where some compiler crashers have been fixed, and move them into the
+diff --git a/utils/sil-opt-verify-all-modules.py b/utils/sil-opt-verify-all-modules.py
+index 0d7b104..1854914 100755
+--- a/utils/sil-opt-verify-all-modules.py
++++ b/utils/sil-opt-verify-all-modules.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ #===------------------------------------------------------------------------===#
+ #
+ # This source file is part of the Swift.org open source project
+diff --git a/utils/split_file.py b/utils/split_file.py
+index f0d499f..7ec99a2 100755
+--- a/utils/split_file.py
++++ b/utils/split_file.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ """
+ split_file.py [-o <dir>] <path>
+diff --git a/utils/submit-benchmark-results b/utils/submit-benchmark-results
+index bdd08a2..ffff525 100755
+--- a/utils/submit-benchmark-results
++++ b/utils/submit-benchmark-results
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ """
+ Utility script for submitting benchmark results to an LNT server.
+diff --git a/utils/swift-bench.py b/utils/swift-bench.py
+index 7042358..6dcf0b7 100644
+--- a/utils/swift-bench.py
++++ b/utils/swift-bench.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ ##===--- swift-bench.py -------------------------------*- coding: utf-8 -*-===##
+ ##
+ ## This source file is part of the Swift.org open source project
+diff --git a/utils/update-checkout b/utils/update-checkout
+index fdf7120..83ea689 100755
+--- a/utils/update-checkout
++++ b/utils/update-checkout
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ #===--- update-checkout - Utility to update your local checkouts -----------===#
+ #
+ # This source file is part of the Swift.org open source project
+diff --git a/utils/viewcfg b/utils/viewcfg
+index 8450d20..e4706c2 100755
+--- a/utils/viewcfg
++++ b/utils/viewcfg
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ # A script for viewing the CFG of SIL and llvm IR.
+ 
+diff --git a/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py b/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py
+index a83dfef..068c27f 100644
+--- a/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py
++++ b/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ 
+ import itertools
+ 
+-- 
+2.6.4
+
