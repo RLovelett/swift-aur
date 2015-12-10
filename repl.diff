@@ -1,0 +1,49 @@
+diff --git a/lib/Immediate/REPL.cpp b/lib/Immediate/REPL.cpp
+index 740b315..86e1ff2 100644
+--- a/lib/Immediate/REPL.cpp
++++ b/lib/Immediate/REPL.cpp
+@@ -33,11 +33,7 @@
+ #include "llvm/Support/PrettyStackTrace.h"
+ #include "llvm/Support/Process.h"
+ 
+-#if defined(__APPLE__)
+-// FIXME: Support REPL on non-Apple platforms. Ubuntu 14.10's editline does not
+-// include the wide character entry points needed by the REPL yet.
+ #include <histedit.h>
+-#endif // __APPLE__
+ 
+ using namespace swift;
+ using namespace swift::immediate;
+@@ -183,8 +179,6 @@ static bool appendToREPLFile(SourceFile &SF,
+   return FoundAnySideEffects;
+ }
+ 
+-#if defined(__APPLE__)
+-
+ /// An arbitrary, otherwise-unused char value that editline interprets as
+ /// entering/leaving "literal mode", meaning it passes prompt characters through
+ /// to the terminal without affecting the line state. This prevents color
+@@ -360,7 +354,7 @@ public:
+       convertToUTF8(llvm::makeArrayRef(WLine, WLine + wcslen(WLine)),
+                     CurrentLines);
+ 
+-      wcslcat(TotalLine, WLine, sizeof(TotalLine) / sizeof(*TotalLine));
++      wcsncat(TotalLine, WLine, sizeof(TotalLine) / sizeof(*TotalLine));
+ 
+       ++CurChunkLines;
+ 
+@@ -1182,14 +1176,3 @@ void swift::runREPL(CompilerInstance &CI, const ProcessCmdLine &CmdLine,
+     inputKind = env.getInput().getREPLInput(Line);
+   } while (env.handleREPLInput(inputKind, Line));
+ }
+-
+-#else // __APPLE__
+-
+-void swift::runREPL(CompilerInstance &CI, const ProcessCmdLine &CmdLine,
+-                    bool ParseStdlib) {
+-  // Disable the REPL on other platforms; our current implementation is tied
+-  // to histedit.h.
+-  llvm::report_fatal_error("Compiler-internal integrated REPL unimplemented "
+-                           "for this platform");
+-}
+-#endif
