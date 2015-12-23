@@ -83,10 +83,6 @@ prepare() {
   git apply "$srcdir/0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch"
 }
 
-build() {
-  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux prefix=usr destdir="$pkgdir/"
-}
-
 package() {
   "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux prefix=usr destdir="$pkgdir/"
 }
