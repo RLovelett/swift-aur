@@ -1,54 +1,30 @@
-From 10078022a0d6e78f48e56fe6fca250eec8e0be07 Mon Sep 17 00:00:00 2001
+From 59c13e6ed2b8a59a45325fe0e3813d8f01ebbfc7 Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
-Date: Wed, 23 Dec 2015 12:42:08 -0500
+Date: Thu, 24 Dec 2015 13:10:57 -0500
 Subject: [PATCH] Provide a custom preset for Arch Linux
 
 Mostly this is the same as the other Linux build bot. Just enables
 verbose building by default. Since Arch Linux seems to have *a lot* of
 compilation issues.
 
-Disables all the tests too
+Disables all the tests too.
 ---
- utils/build-presets.ini | 50 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ utils/build-presets.ini | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/utils/build-presets.ini b/utils/build-presets.ini
-index d5f94c7..85d7066 100644
+index d5f94c7..62930f4 100644
 --- a/utils/build-presets.ini
 +++ b/utils/build-presets.ini
-@@ -482,6 +482,56 @@ mixin-preset=buildbot_linux
+@@ -482,6 +482,32 @@ mixin-preset=buildbot_linux
  [preset: buildbot_linux_1404]
  mixin-preset=buildbot_linux
  
 +# Arch Linux preset for backwards compat and future customizations.
 +[preset: buildbot_arch_linux]
-+mixin-preset=mixin_lightweight_assertions
-+build-subdir=buildbot_linux
-+
-+llbuild
-+swiftpm
-+xctest
-+lldb
-+release
-+test
-+validation-test
-+foundation
++mixin-preset=buildbot_linux
 +
 +dash-dash
-+
-+install-swift=1
-+install-lldb=1
-+install-llbuild=1
-+install-swiftpm=1
-+install-xctest=1
-+install-foundation=1
-+# Allow the install prefix to be configured
-+install-prefix=/%(PREFIX)s
-+swift-install-components=compiler;clang-builtin-headers;stdlib;sdk-overlay;license
-+build-swift-static-stdlib=1
-+
-+# Path to the root of the installation filesystem
-+install-destdir=%(DESTDIR)s
 +
 +skip-test-cmark=1
 +skip-test-lldb=1

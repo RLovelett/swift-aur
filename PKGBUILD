@@ -58,7 +58,7 @@ sha256sums=(
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
   '78a900f7b9084c393b3008c851e6d276e3ad6f49c0892eb2d548e564fbd25211'
   '4aa04411d35cf08d093d574b21b755562596c2e6e8d367a75beb9ee7010271a6'
-  '3421438f82b9b41d6af3c2edad5b843c965dedf46c2200d0dfc1d1c69c08b286'
+  '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -88,5 +88,5 @@ prepare() {
 }
 
 package() {
-  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux prefix=usr destdir="$pkgdir/"
+  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux installable_package="/tmp/swift-$pkgver.tar.gz" install_destdir="$pkgdir/"
 }
