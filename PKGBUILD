@@ -1,6 +1,10 @@
 _gitbranch='master'
 pkgname='swiftc'
-pkgver="1.0.0_${_gitbranch}"
+pkgver="2.2.20151222a"
+pkgver() {
+  cd "$srcdir/swift"
+  git describe --long --tags | sed -r 's/swift-([0-9]+\.[0-9]+)-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/\1.\2\3\4\5.r\6/g;s/-/./g'
+}
 pkgrel='1'
 arch=('x86_64')
 license=('Apache')
