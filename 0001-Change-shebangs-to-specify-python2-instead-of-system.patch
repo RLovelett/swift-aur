@@ -1,4 +1,4 @@
-From 7b36baa1b1b8d0287b8cb1a428cb494cb7aa9a5b Mon Sep 17 00:00:00 2001
+From 55d26916d4a35843bbea45e22dd77d79556ee14d Mon Sep 17 00:00:00 2001
 From: Emati Mitame <GitCommits@mita.me>
 Date: Thu, 3 Dec 2015 19:40:23 +0000
 Subject: [PATCH] Change shebangs to specify python2 instead of system default
@@ -139,25 +139,25 @@ index f3f84eb..79ba2d7 100755
  import sys
  
 diff --git a/utils/apply-fixit-edits.py b/utils/apply-fixit-edits.py
-index 35ae174..194331c 100755
+index 0b374ec..f1536ef 100755
 --- a/utils/apply-fixit-edits.py
 +++ b/utils/apply-fixit-edits.py
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- 
- #===--- apply-fixit-edits.py - Tool for applying edits from .remap files ---===#
+ # utils/apply-fixit-edits.py - Apply edits from .remap files -*- python -*-
  #
+ # This source file is part of the Swift.org open source project
 diff --git a/utils/build-script b/utils/build-script
-index 3703552..af5c48c 100755
+index 53c72a4..1f7a662 100755
 --- a/utils/build-script
 +++ b/utils/build-script
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- #===--- build-script - The ultimate tool for building Swift ----------------===#
+ # utils/build-script - The ultimate tool for building Swift -*- python -*-
  #
- ## This source file is part of the Swift.org open source project
+ # This source file is part of the Swift.org open source project
 diff --git a/utils/cmpcodesize/cmpcodesize.py b/utils/cmpcodesize/cmpcodesize.py
 index eb9ecfa..f7a9123 100755
 --- a/utils/cmpcodesize/cmpcodesize.py
@@ -297,13 +297,13 @@ index c6c7434..77d61a8 100755
  # A small utility to take the output of a Swift validation test run
  # where some compiler crashers have been fixed, and move them into the
 diff --git a/utils/sil-opt-verify-all-modules.py b/utils/sil-opt-verify-all-modules.py
-index 29b2b85..0fc90ad 100755
+index 5d96041..e1db8b6 100755
 --- a/utils/sil-opt-verify-all-modules.py
 +++ b/utils/sil-opt-verify-all-modules.py
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- #===------------------------------------------------------------------------===#
+ # utils/sil-opt-verify-all-modules.py - Verifies Swift modules -*- python -*-
  #
  # This source file is part of the Swift.org open source project
 diff --git a/utils/split_file.py b/utils/split_file.py
@@ -337,13 +337,13 @@ index bb71aaa..2b3b3fb 100644
  ##
  ## This source file is part of the Swift.org open source project
 diff --git a/utils/update-checkout b/utils/update-checkout
-index ffaef40..3b9466d 100755
+index 03e5da5..6ebc12f 100755
 --- a/utils/update-checkout
 +++ b/utils/update-checkout
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- #===--- update-checkout - Utility to update your local checkouts -----------===#
+ # utils/update-checkout - Utility to update your local checkouts -*- python -*-
  #
  # This source file is part of the Swift.org open source project
 diff --git a/utils/viewcfg b/utils/viewcfg
