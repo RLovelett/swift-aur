@@ -1,12 +1,12 @@
-From ee48569096a1467bf1530e0ec8c0b89c24196767 Mon Sep 17 00:00:00 2001
+From 7190f4aae8c1e76e24d278032998514dde190080 Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Thu, 24 Dec 2015 14:34:27 -0500
 Subject: [PATCH] Prefer XZ compression over Gzip compression
 
 ---
  utils/build-script      | 4 ++--
- utils/build-script-impl | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ utils/build-script-impl | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/utils/build-script b/utils/build-script
 index 72cb48b..a570f8d 100755
@@ -28,7 +28,7 @@ index 72cb48b..a570f8d 100755
  If you have your own favorite set of options, you can create your own, local,
  preset.  For example, let's create a preset called 'ds' (which stands for
 diff --git a/utils/build-script-impl b/utils/build-script-impl
-index 44429d1..590da1b 100755
+index 44429d1..db97862 100755
 --- a/utils/build-script-impl
 +++ b/utils/build-script-impl
 @@ -2270,10 +2270,10 @@ if [[ "${INSTALLABLE_PACKAGE}" ]] ; then
@@ -44,6 +44,15 @@ index 44429d1..590da1b 100755
      fi
      if [[ "${TEST_INSTALLABLE_PACKAGE}" ]] ; then
          PKG_TESTS_SOURCE_DIR="${WORKSPACE}/swift-integration-tests"
+@@ -2292,7 +2292,7 @@ if [[ "${INSTALLABLE_PACKAGE}" ]] ; then
+         rm -rf "${PKG_TESTS_SANDBOX_PARENT}"
+         mkdir -p "${PKG_TESTS_SANDBOX}"
+         pushd "${PKG_TESTS_SANDBOX_PARENT}"
+-        tar xzf "${INSTALLABLE_PACKAGE}"
++        tar xf "${INSTALLABLE_PACKAGE}"
+         popd
+ 
+         (cd "${PKG_TESTS_SOURCE_DIR}" &&
 -- 
 2.6.4
 
