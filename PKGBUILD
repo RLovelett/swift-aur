@@ -41,7 +41,7 @@ source=(
   "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=${_gitbranch}"
   "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=${_gitbranch}"
   "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#commit=a4f0b60ab12dfb85bd3f0374f699757db165fadd"
+  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
   "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#branch=${_gitbranch}"
 )
 
