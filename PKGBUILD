@@ -88,5 +88,5 @@ prepare() {
 }
 
 package() {
-  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux installable_package="./swift-$pkgver.tar.gz" install_destdir="$pkgdir/"
+  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.gz)" install_destdir="$pkgdir/"
 }
