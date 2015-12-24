@@ -1,4 +1,4 @@
-From ebbae91db7b1372263d56cb0edf7feb18a279634 Mon Sep 17 00:00:00 2001
+From d6889e3bb849a5941c03a643dab8ff7ec60fb17f Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Sat, 19 Dec 2015 16:56:32 -0500
 Subject: [PATCH] Fix linker not finding pthreads and dl
@@ -9,11 +9,11 @@ from linker flags returned by _add_variant_link_flags method. Then
 applying the link libraries using CMake's target_link_libraries
 function.
 ---
- cmake/modules/AddSwift.cmake | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ cmake/modules/AddSwift.cmake | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
 diff --git a/cmake/modules/AddSwift.cmake b/cmake/modules/AddSwift.cmake
-index 9af22f6..4f6cd76 100644
+index 8cb0b42..7d94d95 100644
 --- a/cmake/modules/AddSwift.cmake
 +++ b/cmake/modules/AddSwift.cmake
 @@ -139,7 +139,8 @@ function(_add_variant_swift_compile_flags
@@ -113,22 +113,6 @@ index 9af22f6..4f6cd76 100644
    swift_common_llvm_config("${name}" ${SWIFTEXE_SINGLE_COMPONENT_DEPENDS})
  
    set_target_properties(${name}
-@@ -1864,13 +1872,14 @@ function(add_swift_llvm_loadable_module name)
-       c_compile_flags)
- 
-   set(link_flags)
-+  set(link_libs)
-   _add_variant_link_flags(
-       "${sdk}"
-       "${arch}"
-       "${CMAKE_BUILD_TYPE}"
-       "${LLVM_ENABLE_ASSERTIONS}"
-       FALSE
--      link_flags)
-+      link_libs link_flags)
- 
-   # Convert variables to space-separated strings.
-   _list_escape_for_shell("${c_compile_flags}" c_compile_flags)
 -- 
 2.6.4
 
