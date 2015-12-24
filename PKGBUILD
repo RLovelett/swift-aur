@@ -37,6 +37,7 @@ source=(
   '0001-First.patch'
   '0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
+  '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
   "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
   "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
@@ -59,6 +60,7 @@ sha256sums=(
   '78a900f7b9084c393b3008c851e6d276e3ad6f49c0892eb2d548e564fbd25211'
   '4aa04411d35cf08d093d574b21b755562596c2e6e8d367a75beb9ee7010271a6'
   '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
+  '47ec217bc03b24db60fd47a86c7c5af50281db3d31a8f4b539e50efe5a1b3ca7'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -73,6 +75,7 @@ sha256sums=(
 
 prepare() {
   cd "$srcdir/swift"
+  git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
   git apply "$srcdir/0001-Change-shebangs-to-specify-python2-instead-of-system.patch"
   git apply "$srcdir/swift-linker.patch"
@@ -88,5 +91,5 @@ prepare() {
 }
 
 package() {
-  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.gz)" install_destdir="$pkgdir/"
+  "$srcdir/swift/utils/build-script" --preset=buildbot_arch_linux installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)" install_destdir="$pkgdir/"
 }
