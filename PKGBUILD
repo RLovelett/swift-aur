@@ -28,8 +28,13 @@ makedepends=(
 )
 
 source=(
+  '0001-gyb-Use-partial-function-application-to-work-around-.patch'
+  '0002-gyb-Python-2-and-3-compatible-StringIO-import.patch'
+  '0003-gyb-Provide-Python-2-and-3-compatable-exception-synt.patch'
+  '0004-gyb-Decode-byte-object-to-string-for-compatibility-w.patch'
+  '0005-gyb-Convert-map-object-to-list-object.patch'
+  '0006-gyb-Popen-explicit-string-instead-of-byte-sequence.patch'
   'swift-linker.patch'
-  '0001-Change-shebangs-to-specify-python2-instead-of-system.patch'
   '0001-Fix-linker-not-finding-pthreads-and-dl.patch'
   '0001-Conform-to-PEP-0394-in-Python-sources.patch'
   '0001-swift-corelibs-foundation-Conform-to-PEP-0394-in-Python-sources.patch'
@@ -51,8 +56,13 @@ source=(
 )
 
 sha256sums=(
+  '3dacb4970cc453a04d247ec6efa26cff55a2591286590badc377546cecb47279'
+  '316f1a71f4d042220b2f1092dc3e7bc08ddd94ba222b3a4a23959dc9be19dee0'
+  'eacfe99e91b6ce2be44ec29e981a328dd10b19ae92055db1ff263bea49a9fbc4'
+  '1d87af6ecb3cbc5aad99f4016120ba4e55520b9304e8ec8db86b1b89543c2a52'
+  'd354de795f1f48adf762a3a2d8ffe2a2a439b47413db1e35bcd3b1d874ed595b'
+  '6ee251c46ff0b20497720d6ffcb2adb25c97dfeadaa3ffdd9dab12edadbbcd68'
   '70fd23665a68c1575113d1198b3088b49636bad90b5f068563076af362f63f68'
-  'fe5aa98d34771b0dc216f0a36007a699b47eea4fc85ab7e42e390de02791a299'
   '30752850faacaeb5ad2fe7d09f7c6f2801fb1a1fc1a7b9e56224ee774d22eb45'
   '1db1eb7562ab3c730021540e1774a3f7726449f8802221f5f741d53767c01d88'
   '09a2a967259086d877be81731cd5283a36ce860f50a6ea72499ff5f9c9ec9777'
@@ -75,9 +85,20 @@ sha256sums=(
 
 prepare() {
   cd "$srcdir/swift"
+  # Fix Python issues. Merge request(s) upstream:
+  # https://github.com/apple/swift/pull/806
+  git apply "$srcdir/0001-gyb-Use-partial-function-application-to-work-around-.patch"
+  git apply "$srcdir/0002-gyb-Python-2-and-3-compatible-StringIO-import.patch"
+  git apply "$srcdir/0003-gyb-Provide-Python-2-and-3-compatable-exception-synt.patch"
+  git apply "$srcdir/0004-gyb-Decode-byte-object-to-string-for-compatibility-w.patch"
+  git apply "$srcdir/0005-gyb-Convert-map-object-to-list-object.patch"
+  git apply "$srcdir/0006-gyb-Popen-explicit-string-instead-of-byte-sequence.patch"
+  # Prefer LZMA2 compression for smaller files. Merge request(s) upstream:
+  # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
-  git apply "$srcdir/0001-Change-shebangs-to-specify-python2-instead-of-system.patch"
+  # Fix linker not finding pthreads or dl. Merge request(s) upstream:
+  # https://github.com/apple/swift/pull/435
   git apply "$srcdir/swift-linker.patch"
   cd "$srcdir/lldb"
   git apply "$srcdir/fix-lldb-build.patch"
