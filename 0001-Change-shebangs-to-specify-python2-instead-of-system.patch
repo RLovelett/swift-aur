@@ -1,4 +1,4 @@
-From 33fceab802c0384613fab54a6f192dba0bb96689 Mon Sep 17 00:00:00 2001
+From 314c3fed3516a35c41410102feb85e68bcb9274e Mon Sep 17 00:00:00 2001
 From: Emati Mitame <GitCommits@mita.me>
 Date: Thu, 3 Dec 2015 19:40:23 +0000
 Subject: [PATCH] Change shebangs to specify python2 instead of system default
@@ -149,7 +149,7 @@ index 0b374ec..f1536ef 100755
  #
  # This source file is part of the Swift.org open source project
 diff --git a/utils/build-script b/utils/build-script
-index 8aa752a..1cfc0da 100755
+index faf8290..8c52ba2 100755
 --- a/utils/build-script
 +++ b/utils/build-script
 @@ -1,4 +1,4 @@
@@ -208,15 +208,15 @@ index 0d12317..d778b7d 100755
  # this one's short).  See -h output for instructions
  
 diff --git a/utils/line-directive b/utils/line-directive
-index 0f62f85..e89015b 100755
+index 7f147f8..043c2d8 100755
 --- a/utils/line-directive
 +++ b/utils/line-directive
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- #convert line numbers in error messages according to "line directive" comments
- import sys
- import re
+ # line-directive.py - Transform line numbers in error messages -*- python -*-
+ #
+ # This source file is part of the Swift.org open source project
 diff --git a/utils/omit-needless-words.py b/utils/omit-needless-words.py
 index 8510eba..c8e0f55 100755
 --- a/utils/omit-needless-words.py
@@ -338,15 +338,15 @@ index a1cd25b..2f49a91 100755
  #
  # This source file is part of the Swift.org open source project
 diff --git a/utils/viewcfg b/utils/viewcfg
-index 4974ab5..fb72bf5 100755
+index d160818..83f995f 100755
 --- a/utils/viewcfg
 +++ b/utils/viewcfg
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
- 
- # A script for viewing the CFG of SIL and llvm IR.
- 
+ # viewcfg - A script for viewing the CFG of SIL and LLVM IR -*- python -*-
+ #
+ # This source file is part of the Swift.org open source project
 diff --git a/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py b/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py
 index 5181927..87ee5e8 100644
 --- a/validation-test/stdlib/Slice/Inputs/GenerateSliceTests.py
