@@ -25,6 +25,7 @@ makedepends=(
   'sqlite'
   'swig'
   'ncurses'
+  'rsync'
 )
 
 source=(
