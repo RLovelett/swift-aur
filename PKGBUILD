@@ -84,7 +84,7 @@ prepare() {
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
   # Fix linker not finding pthreads or dl. Merge request(s) upstream:
   # https://github.com/apple/swift/pull/435
-  git apply "$srcdir/swift-linker.patch"
+  git apply "$srcdir/0001-Fix-linker-not-finding-pthreads-and-dl.patch"
   cd "$srcdir/lldb"
   git apply "$srcdir/fix-lldb-build.patch"
   cd "$srcdir/swiftpm"
