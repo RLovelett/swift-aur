@@ -35,10 +35,9 @@ options=(!strip)
 source=(
   'swift-linker.patch'
   '0001-Fix-linker-not-finding-pthreads-and-dl.patch'
-  '0001-Conform-to-PEP-0394-in-Python-sources.patch'
-  '0001-swift-corelibs-foundation-Conform-to-PEP-0394-in-Python-sources.patch'
+  '0001-bootstrap-Support-Python-2-and-3-in-the-bootstrap-sc.patch'
+  '0001-Make-it-work-on-Python-2-and-3.patch'
   'fix-lldb-build.patch'
-  '0001-First.patch'
   '0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
@@ -57,10 +56,9 @@ source=(
 sha256sums=(
   '70fd23665a68c1575113d1198b3088b49636bad90b5f068563076af362f63f68'
   '30752850faacaeb5ad2fe7d09f7c6f2801fb1a1fc1a7b9e56224ee774d22eb45'
-  '1db1eb7562ab3c730021540e1774a3f7726449f8802221f5f741d53767c01d88'
-  '09a2a967259086d877be81731cd5283a36ce860f50a6ea72499ff5f9c9ec9777'
+  '2180c1554b3ac41fb0fc2a679965b78e676e07c48e8adb62200c9422a6235895'
+  '6a5920e5a1667a2c0e0398c3ad7083c89d22a956f9036c17a46df300f1f30fd1'
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
-  '78a900f7b9084c393b3008c851e6d276e3ad6f49c0892eb2d548e564fbd25211'
   '4aa04411d35cf08d093d574b21b755562596c2e6e8d367a75beb9ee7010271a6'
   '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
   'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
@@ -88,10 +86,9 @@ prepare() {
   cd "$srcdir/lldb"
   git apply "$srcdir/fix-lldb-build.patch"
   cd "$srcdir/swiftpm"
-  git apply "$srcdir/0001-Conform-to-PEP-0394-in-Python-sources.patch"
+  git apply "$srcdir/0001-bootstrap-Support-Python-2-and-3-in-the-bootstrap-sc.patch"
   cd "$srcdir/swift-corelibs-foundation"
-  git apply "$srcdir/0001-swift-corelibs-foundation-Conform-to-PEP-0394-in-Python-sources.patch"
-  git apply "$srcdir/0001-First.patch"
+  git apply "$srcdir/0001-Make-it-work-on-Python-2-and-3.patch"
   cd "$srcdir/llvm"
   git apply "$srcdir/0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch"
 }
