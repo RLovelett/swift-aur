@@ -33,8 +33,6 @@ makedepends=(
 options=(!strip)
 
 source=(
-  'swift-linker.patch'
-  '0001-Fix-linker-not-finding-pthreads-and-dl.patch'
   '0001-bootstrap-Support-Python-2-and-3-in-the-bootstrap-sc.patch'
   '0001-Make-it-work-on-Python-2-and-3.patch'
   'fix-lldb-build.patch'
@@ -54,8 +52,6 @@ source=(
 )
 
 sha256sums=(
-  '70fd23665a68c1575113d1198b3088b49636bad90b5f068563076af362f63f68'
-  '30752850faacaeb5ad2fe7d09f7c6f2801fb1a1fc1a7b9e56224ee774d22eb45'
   '2180c1554b3ac41fb0fc2a679965b78e676e07c48e8adb62200c9422a6235895'
   '6a5920e5a1667a2c0e0398c3ad7083c89d22a956f9036c17a46df300f1f30fd1'
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
@@ -80,9 +76,6 @@ prepare() {
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
-  # Fix linker not finding pthreads or dl. Merge request(s) upstream:
-  # https://github.com/apple/swift/pull/435
-  git apply "$srcdir/0001-Fix-linker-not-finding-pthreads-and-dl.patch"
   cd "$srcdir/lldb"
   git apply "$srcdir/fix-lldb-build.patch"
   cd "$srcdir/swiftpm"
