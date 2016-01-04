@@ -28,6 +28,10 @@ makedepends=(
   'rsync'
 )
 
+# By default makepkg runs strip on binaries. This seems to cause issues with the Swift REPL.
+# Disable it in the PKGBUILD with:
+options=(!strip)
+
 source=(
   'swift-linker.patch'
   '0001-Fix-linker-not-finding-pthreads-and-dl.patch'
