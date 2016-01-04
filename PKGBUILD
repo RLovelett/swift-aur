@@ -34,7 +34,6 @@ options=(!strip)
 
 source=(
   '0001-bootstrap-Refactor-to-be-compatible-with-Python-2-or.patch'
-  '0001-Refactor-to-be-compatible-with-Python-2-or-3.patch'
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
@@ -52,7 +51,6 @@ source=(
 
 sha256sums=(
   '24fab706e46f77efaec6191813b56ec5fda4344d6a9d31b965cf871387fbcef9'
-  '6dfc40c00e87d67f691ac96370fa1ac058c31784beca4c98aeb0fafa74e1d3a4'
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
   '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
   'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
@@ -84,11 +82,6 @@ prepare() {
   # Python 2 and 3 compatability. Merge request(s) upstream:
   # https://github.com/apple/swift-package-manager/pull/108
   git apply "$srcdir/0001-bootstrap-Refactor-to-be-compatible-with-Python-2-or.patch"
-
-  cd "$srcdir/swift-corelibs-foundation"
-  # Python 2 and 3 compatability. Merge request(s) upstream:
-  # https://github.com/apple/swift-corelibs-foundation/pull/214
-  git apply "$srcdir/0001-Refactor-to-be-compatible-with-Python-2-or-3.patch"
 }
 
 package() {
