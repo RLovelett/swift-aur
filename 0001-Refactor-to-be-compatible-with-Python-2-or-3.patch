@@ -1,17 +1,20 @@
-From 04da81179bd7bd4e19e048fd60d446b57d5c7882 Mon Sep 17 00:00:00 2001
+From 1f9c7b2699c50b9478fb4b8eef20ec43b2913e8f Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Sun, 3 Jan 2016 10:37:57 -0500
-Subject: [PATCH] Make it work on Python 2 and 3
+Subject: [PATCH] Refactor to be compatible with Python 2 or 3
 
+Other projects have asked that their Python enabled scripts were
+refactored to be compatible with Python 2 or 3. This patch continues
+that vein in the corelibs-foundation project.
 ---
  configure        |  2 +-
- lib/config.py    |  5 ++++-
- lib/phases.py    | 15 ++++++++++++---
- lib/product.py   | 40 ++++++++++++++++++++++++++++++++--------
- lib/script.py    |  7 +++++--
- lib/target.py    |  5 ++++-
- lib/workspace.py | 14 ++++++++++----
- 7 files changed, 68 insertions(+), 20 deletions(-)
+ lib/config.py    |  2 +-
+ lib/phases.py    |  6 +++---
+ lib/product.py   | 16 ++++++++--------
+ lib/script.py    |  4 ++--
+ lib/target.py    |  2 +-
+ lib/workspace.py |  8 ++++----
+ 7 files changed, 20 insertions(+), 20 deletions(-)
 
 diff --git a/configure b/configure
 index 23edb6b..dd99134 100755
@@ -27,52 +30,40 @@ index 23edb6b..dd99134 100755
  
  if __name__ == "__main__":
 diff --git a/lib/config.py b/lib/config.py
-index 895bac7..ca675d3 100644
+index 895bac7..f7afce5 100644
 --- a/lib/config.py
 +++ b/lib/config.py
-@@ -9,7 +9,10 @@
+@@ -9,7 +9,7 @@
  
  import json
  
 -from path import Path
-+try:
-+    from path import Path
-+except ImportError:
-+    from .path import Path
++from .path import Path
  
  class Configuration:
      Debug = "debug"
 diff --git a/lib/phases.py b/lib/phases.py
-index e212bdd..ce46264 100644
+index e212bdd..2b2a8c5 100644
 --- a/lib/phases.py
 +++ b/lib/phases.py
-@@ -7,9 +7,18 @@
+@@ -7,9 +7,9 @@
  # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
  #
  
 -from config import Configuration
 -from target import TargetConditional
 -from path import Path
-+try:
-+    from config import Configuration
-+except ImportError:
-+    from .config import Configuration
-+try:
-+    from target import TargetConditional
-+except ImportError:
-+    from .target import TargetConditional
-+try:
-+    from path import Path
-+except ImportError:
-+    from .path import Path
++from .config import Configuration
++from .target import TargetConditional
++from .path import Path
  import os
  
  class BuildAction:
 diff --git a/lib/product.py b/lib/product.py
-index 82684cc..1885adc 100644
+index 82684cc..1f0ad14 100644
 --- a/lib/product.py
 +++ b/lib/product.py
-@@ -7,14 +7,38 @@
+@@ -7,14 +7,14 @@
  # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
  #
  
@@ -84,58 +75,31 @@ index 82684cc..1885adc 100644
 -from phases import MergeSwiftModule
 -from target import OSType
 -from path import Path
-+try:
-+    from config import Configuration
-+except ImportError:
-+    from .config import Configuration
-+try:
-+    from phases import CompileC
-+except ImportError:
-+    from .phases import CompileC
-+try:
-+    from phases import CompileCxx
-+except ImportError:
-+    from .phases import CompileCxx
-+try:
-+    from phases import Assemble
-+except ImportError:
-+    from .phases import Assemble
-+try:
-+    from phases import BuildAction
-+except ImportError:
-+    from .phases import BuildAction
-+try:
-+    from phases import MergeSwiftModule
-+except ImportError:
-+    from .phases import MergeSwiftModule
-+try:
-+    from target import OSType
-+except ImportError:
-+    from .target import OSType
-+try:
-+    from path import Path
-+except ImportError:
-+    from .path import Path
++from .config import Configuration
++from .phases import CompileC
++from .phases import CompileCxx
++from .phases import Assemble
++from .phases import BuildAction
++from .phases import MergeSwiftModule
++from .target import OSType
++from .path import Path
  
  import os
  
 diff --git a/lib/script.py b/lib/script.py
-index 5a5fe2f..05224a7 100644
+index 5a5fe2f..2651e49 100644
 --- a/lib/script.py
 +++ b/lib/script.py
-@@ -7,7 +7,10 @@
+@@ -7,7 +7,7 @@
  # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
  #
  
 -from config import Configuration
-+try:
-+    from config import Configuration
-+except ImportError:
-+    from .config import Configuration
++from .config import Configuration
  import os
  
  class Script:
-@@ -31,7 +34,7 @@ class Script:
+@@ -31,7 +31,7 @@ class Script:
  
      def generate_products(self):
          variables = ""
@@ -145,43 +109,34 @@ index 5a5fe2f..05224a7 100644
          variables += "\n"
          verbose_flags = """
 diff --git a/lib/target.py b/lib/target.py
-index cd96f1e..ceb4c2d 100644
+index cd96f1e..2ddc6f9 100644
 --- a/lib/target.py
 +++ b/lib/target.py
-@@ -7,7 +7,10 @@
+@@ -7,7 +7,7 @@
  # See http://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
  #
  
 -from config import Configuration
-+try:
-+    from config import Configuration
-+except ImportError:
-+    from .config import Configuration
++from .config import Configuration
  import platform
  
  class ArchType:
 diff --git a/lib/workspace.py b/lib/workspace.py
-index 73bf5dd..976717a 100644
+index 73bf5dd..5b9958a 100644
 --- a/lib/workspace.py
 +++ b/lib/workspace.py
-@@ -8,8 +8,14 @@
+@@ -8,8 +8,8 @@
  #
  
  from subprocess import call
 -from config import Configuration
 -from path import Path
-+try:
-+    from config import Configuration
-+except ImportError:
-+    from .config import Configuration
-+try:
-+    from path import Path
-+except ImportError:
-+    from .path import Path
++from .config import Configuration
++from .path import Path
  import os
  
  class Workspace:
-@@ -36,8 +42,8 @@ class Workspace:
+@@ -36,8 +36,8 @@ class Workspace:
  
              if Configuration.current.verbose:
                  cmd.append("--verbose")

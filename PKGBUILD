@@ -33,10 +33,9 @@ makedepends=(
 options=(!strip)
 
 source=(
-  '0001-bootstrap-Support-Python-2-and-3-in-the-bootstrap-sc.patch'
-  '0001-Make-it-work-on-Python-2-and-3.patch'
+  '0001-bootstrap-Refactor-to-be-compatible-with-Python-2-or.patch'
+  '0001-Refactor-to-be-compatible-with-Python-2-or-3.patch'
   'fix-lldb-build.patch'
-  '0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
@@ -52,10 +51,9 @@ source=(
 )
 
 sha256sums=(
-  '2180c1554b3ac41fb0fc2a679965b78e676e07c48e8adb62200c9422a6235895'
-  '6a5920e5a1667a2c0e0398c3ad7083c89d22a956f9036c17a46df300f1f30fd1'
+  '24fab706e46f77efaec6191813b56ec5fda4344d6a9d31b965cf871387fbcef9'
+  '6dfc40c00e87d67f691ac96370fa1ac058c31784beca4c98aeb0fafa74e1d3a4'
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
-  '4aa04411d35cf08d093d574b21b755562596c2e6e8d367a75beb9ee7010271a6'
   '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
   'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
   'SKIP'
@@ -76,14 +74,21 @@ prepare() {
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
+
   cd "$srcdir/lldb"
+  # This is a proposed patch provided by the community. This patches Python 3 compatibility.
+  # https://bugs.swift.org/browse/SR-14
   git apply "$srcdir/fix-lldb-build.patch"
+
   cd "$srcdir/swiftpm"
-  git apply "$srcdir/0001-bootstrap-Support-Python-2-and-3-in-the-bootstrap-sc.patch"
+  # Python 2 and 3 compatability. Merge request(s) upstream:
+  # https://github.com/apple/swift-package-manager/pull/108
+  git apply "$srcdir/0001-bootstrap-Refactor-to-be-compatible-with-Python-2-or.patch"
+
   cd "$srcdir/swift-corelibs-foundation"
-  git apply "$srcdir/0001-Make-it-work-on-Python-2-and-3.patch"
-  cd "$srcdir/llvm"
-  git apply "$srcdir/0001-swift-llvm-Conform-to-PEP-0394-in-Python-sources.patch"
+  # Python 2 and 3 compatability. Merge request(s) upstream:
+  # https://github.com/apple/swift-corelibs-foundation/pull/214
+  git apply "$srcdir/0001-Refactor-to-be-compatible-with-Python-2-or-3.patch"
 }
 
 package() {
