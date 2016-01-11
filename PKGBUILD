@@ -32,6 +32,10 @@ makedepends=(
 # Disable it in the PKGBUILD with:
 options=(!strip)
 
+# /etc/makepkg.conf has this defined as "-Wl,-01,--sort-common,--as-needed,-z,relro"
+# I think this is an issue not sure why though
+LDFLAGS=""
+
 source=(
   '0001-bootstrap-Refactor-to-be-compatible-with-Python-2-or.patch'
   'fix-lldb-build.patch'
