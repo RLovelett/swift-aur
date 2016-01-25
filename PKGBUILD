@@ -82,6 +82,8 @@ prepare() {
 }
 
 package() {
+  export LC_CTYPE=en_US.UTF-8
+  export LANG=en_US.UTF-8
   installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
   cd "$srcdir/swift"
   utils/build-script --preset=buildbot_arch_linux installable_package="${installable_package}" install_destdir="$pkgdir/"
