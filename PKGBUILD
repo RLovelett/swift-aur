@@ -1,4 +1,4 @@
-_gitbranch='master'
+_gitbranch='swift-2.2-branch'
 pkgname='swiftc'
 pkgver="2.2.20151222a"
 pkgver() {
@@ -45,8 +45,8 @@ source=(
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
-  "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
-  "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
+  "llvm::git+http://github.com/apple/swift-llvm.git#branch=${_gitbranch}"
+  "clang::git+http://github.com/apple/swift-clang.git#branch=${_gitbranch}"
   "lldb::git+http://github.com/apple/swift-lldb.git#branch=${_gitbranch}"
   "cmark::git+http://github.com/apple/swift-cmark.git#branch=${_gitbranch}"
   "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=${_gitbranch}"
