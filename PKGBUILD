@@ -51,8 +51,8 @@ source=(
   "cmark::git+http://github.com/apple/swift-cmark.git#branch=${_gitbranch}"
   "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=master"
   "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=master"
-  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
+  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=master"
+  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=master"
   "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#branch=${_gitbranch}"
 )
 
