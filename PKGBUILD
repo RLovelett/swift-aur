@@ -11,17 +11,21 @@ license=('Apache')
 pkgdesc='Swift Programming Language'
 url='https://swift.org/'
 
+depends=(
+  'libxml2'
+  'python'
+  'python2'
+  'libutil-linux'
+  'libedit'
+  'icu'
+  'libbsd'
+)
+
 makedepends=(
   'git'
   'cmake'
   'ninja'
-  'python'
-  'python2'
   'clang'
-  'libbsd'
-  'icu'
-  'libedit'
-  'libxml2'
   'sqlite'
   'swig'
   'ncurses'
