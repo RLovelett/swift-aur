@@ -43,7 +43,6 @@ LDFLAGS=""
 source=(
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
-  '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
   "llvm::git+http://github.com/apple/swift-llvm.git#branch=${_gitbranch}"
   "clang::git+http://github.com/apple/swift-clang.git#branch=${_gitbranch}"
@@ -59,7 +58,6 @@ source=(
 sha256sums=(
   'c62a1a903a9849be53f5bb9cc6f701f0a2409e188a38b9df5cc565e9b8f3f9ba'
   '6c876a071616abe0d79ac64c5520662e3f0a68bf1fb9aac98cad7c9003077331'
-  'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -74,9 +72,6 @@ sha256sums=(
 
 prepare() {
   cd "$srcdir/swift"
-  # Prefer LZMA2 compression for smaller files. Merge request(s) upstream:
-  # https://github.com/apple/swift/pull/801
-  git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
 
   cd "$srcdir/lldb"
@@ -88,7 +83,7 @@ prepare() {
 package() {
   export LC_CTYPE=en_US.UTF-8
   export LANG=en_US.UTF-8
-  installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
+  installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.gz)"
   cd "$srcdir/swift"
   utils/build-script --preset=buildbot_arch_linux installable_package="${installable_package}" install_destdir="$pkgdir/"
   tar xf "${installable_package}" -C "$pkgdir/"
