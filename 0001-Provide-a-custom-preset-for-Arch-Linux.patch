@@ -1,19 +1,14 @@
-From 59c13e6ed2b8a59a45325fe0e3813d8f01ebbfc7 Mon Sep 17 00:00:00 2001
+From 40ea8c048cebab2d9c056b46d4a09f47d75f38e8 Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Thu, 24 Dec 2015 13:10:57 -0500
 Subject: [PATCH] Provide a custom preset for Arch Linux
 
-Mostly this is the same as the other Linux build bot. Just enables
-verbose building by default. Since Arch Linux seems to have *a lot* of
-compilation issues.
-
-Disables all the tests too.
 ---
  utils/build-presets.ini | 26 ++++++++++++++++++++++++++
  1 file changed, 26 insertions(+)
 
 diff --git a/utils/build-presets.ini b/utils/build-presets.ini
-index d5f94c7..62930f4 100644
+index bb7d7b4..ba0b51f 100644
 --- a/utils/build-presets.ini
 +++ b/utils/build-presets.ini
 @@ -482,6 +482,32 @@ mixin-preset=buildbot_linux
@@ -46,9 +41,9 @@ index d5f94c7..62930f4 100644
 +reconfigure=1
 +verbose-build=1
 +
- #===------------------------------------------------------------------------===#
- # OS X Package Builders
- #===------------------------------------------------------------------------===#
+ [preset: buildbot_linux_armv7]
+ release
+ llbuild
 -- 
-2.6.4
+2.7.1
 
