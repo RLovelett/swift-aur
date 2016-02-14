@@ -1,6 +1,6 @@
-_gitbranch='swift-2.2-branch'
+_gitbranch='master'
 pkgname='swiftc'
-pkgver="2.2.20151222a"
+pkgver="3.0.20151222a"
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift-([0-9]+\.[0-9]+)-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/\1.\2\3\4\5.r\6/g;s/-/./g'
@@ -44,14 +44,14 @@ source=(
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
-  "llvm::git+http://github.com/apple/swift-llvm.git#branch=${_gitbranch}"
-  "clang::git+http://github.com/apple/swift-clang.git#branch=${_gitbranch}"
+  "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
+  "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
   "lldb::git+http://github.com/apple/swift-lldb.git#branch=${_gitbranch}"
   "cmark::git+http://github.com/apple/swift-cmark.git#branch=${_gitbranch}"
-  "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=master"
-  "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=master"
-  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=master"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=master"
+  "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=${_gitbranch}"
+  "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=${_gitbranch}"
+  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
+  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
   "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#branch=${_gitbranch}"
 )
 
