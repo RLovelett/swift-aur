@@ -1,9 +1,9 @@
 _gitbranch='master'
 pkgname='swiftc'
-pkgver="3.0.20151222a"
+pkgver='3.0.20160208a.r266.g92fc7db'
 pkgver() {
   cd "$srcdir/swift"
-  git describe --long --tags | sed -r 's/swift-([0-9]+\.[0-9]+)-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/\1.\2\3\4\5.r\6/g;s/-/./g'
+  git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
 pkgrel='1'
 arch=('x86_64')
