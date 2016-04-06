@@ -44,6 +44,9 @@ source=(
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
+  # SR-1023
+  '0001-Work-around-relocation-R_X86_64_PC32-link-error.patch'
+  '0002-Update-the-driver.patch'
   "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
   "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
   "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
@@ -60,6 +63,9 @@ sha256sums=(
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
   '73228947aeffada398366afd9e89ea040ca6bc9334057ab89fa82d799b41add6'
   'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
+  # SR-1023
+  'cb81c24fc7013dbd0bd6f58fc274899b4e73142959242462cd79c09d5e4c3c02'
+  '9bf13a5fd2e55c33adcaebc1384552ddc7956744261bf0cd173da820e3515274'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -78,6 +84,11 @@ prepare() {
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
+  # Support relative relocation against protected symbols in binutils 2.26
+  # https://bugs.swift.org/browse/SR-1023
+  # https://github.com/apple/swift/pull/2012
+  git apply "$srcdir/0001-Work-around-relocation-R_X86_64_PC32-link-error.patch"
+  git apply "$srcdir/0002-Update-the-driver.patch"
 
   cd "$srcdir/lldb"
   # This is a proposed patch provided by the community. This patches Python 3 compatibility.
