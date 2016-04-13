@@ -1,4 +1,4 @@
-_gitbranch='master'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a'
 pkgname='swiftc'
 pkgver='3.0.20160208a.r266.g92fc7db'
 pkgver() {
@@ -47,16 +47,16 @@ source=(
   # SR-1023
   '0001-Work-around-relocation-R_X86_64_PC32-link-error.patch'
   '0002-Update-the-driver.patch'
-  "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
-  "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
-  "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
-  "lldb::git+http://github.com/apple/swift-lldb.git#branch=${_gitbranch}"
-  "cmark::git+http://github.com/apple/swift-cmark.git#branch=${_gitbranch}"
-  "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=${_gitbranch}"
-  "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=${_gitbranch}"
-  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
-  "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#branch=${_gitbranch}"
+  "swift::git+http://github.com/apple/swift.git#tag=${_gittag}"
+  "llvm::git+http://github.com/apple/swift-llvm.git#tag=${_gittag}"
+  "clang::git+http://github.com/apple/swift-clang.git#tag=${_gittag}"
+  "lldb::git+http://github.com/apple/swift-lldb.git#tag=${_gittag}"
+  "cmark::git+http://github.com/apple/swift-cmark.git#tag=${_gittag}"
+  "llbuild::git+http://github.com/apple/swift-llbuild.git#tag=${_gittag}"
+  "swiftpm::git+http://github.com/apple/swift-package-manager.git#tag=${_gittag}"
+  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
+  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
+  "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
 )
 
 sha256sums=(
