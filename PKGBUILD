@@ -1,11 +1,11 @@
 _gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a'
 pkgname='swiftc'
-pkgver='3.0.20160208a.r266.g92fc7db'
+pkgver=3.0.20160412a.r0.g36739f7
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel='1'
+pkgrel=1
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
@@ -57,6 +57,7 @@ source=(
   "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
   "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
   "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
+  "compiler-rt::git+https://github.com/apple/swift-compiler-rt.git#tag=${_gittag}"
 )
 
 sha256sums=(
@@ -66,6 +67,7 @@ sha256sums=(
   # SR-1023
   'cb81c24fc7013dbd0bd6f58fc274899b4e73142959242462cd79c09d5e4c3c02'
   '9bf13a5fd2e55c33adcaebc1384552ddc7956744261bf0cd173da820e3515274'
+  'SKIP'
   'SKIP'
   'SKIP'
   'SKIP'
