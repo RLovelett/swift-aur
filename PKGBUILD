@@ -18,7 +18,6 @@ depends=(
   'libutil-linux'
   'libedit'
   'icu'
-  'libbsd'
 )
 
 makedepends=(
