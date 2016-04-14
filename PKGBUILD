@@ -1,11 +1,11 @@
-_gitbranch='master'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a'
 pkgname='swiftc'
-pkgver='3.0.20160208a.r266.g92fc7db'
+pkgver=3.0.20160412a.r0.g36739f7
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel='1'
+pkgrel=2
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
@@ -18,7 +18,6 @@ depends=(
   'libutil-linux'
   'libedit'
   'icu'
-  'libbsd'
 )
 
 makedepends=(
@@ -30,6 +29,10 @@ makedepends=(
   'swig'
   'ncurses'
   'rsync'
+)
+
+conflicts=(
+  'lldb'
 )
 
 # By default makepkg runs strip on binaries. This seems to cause issues with the Swift REPL.
@@ -47,16 +50,17 @@ source=(
   # SR-1023
   '0001-Work-around-relocation-R_X86_64_PC32-link-error.patch'
   '0002-Update-the-driver.patch'
-  "swift::git+http://github.com/apple/swift.git#branch=${_gitbranch}"
-  "llvm::git+http://github.com/apple/swift-llvm.git#branch=stable"
-  "clang::git+http://github.com/apple/swift-clang.git#branch=stable"
-  "lldb::git+http://github.com/apple/swift-lldb.git#branch=${_gitbranch}"
-  "cmark::git+http://github.com/apple/swift-cmark.git#branch=${_gitbranch}"
-  "llbuild::git+http://github.com/apple/swift-llbuild.git#branch=${_gitbranch}"
-  "swiftpm::git+http://github.com/apple/swift-package-manager.git#branch=${_gitbranch}"
-  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#branch=${_gitbranch}"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#branch=${_gitbranch}"
-  "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#branch=${_gitbranch}"
+  "swift::git+http://github.com/apple/swift.git#tag=${_gittag}"
+  "llvm::git+http://github.com/apple/swift-llvm.git#tag=${_gittag}"
+  "clang::git+http://github.com/apple/swift-clang.git#tag=${_gittag}"
+  "lldb::git+http://github.com/apple/swift-lldb.git#tag=${_gittag}"
+  "cmark::git+http://github.com/apple/swift-cmark.git#tag=${_gittag}"
+  "llbuild::git+http://github.com/apple/swift-llbuild.git#tag=${_gittag}"
+  "swiftpm::git+http://github.com/apple/swift-package-manager.git#tag=${_gittag}"
+  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
+  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
+  "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
+  "compiler-rt::git+https://github.com/apple/swift-compiler-rt.git#tag=${_gittag}"
 )
 
 sha256sums=(
@@ -66,6 +70,7 @@ sha256sums=(
   # SR-1023
   'cb81c24fc7013dbd0bd6f58fc274899b4e73142959242462cd79c09d5e4c3c02'
   '9bf13a5fd2e55c33adcaebc1384552ddc7956744261bf0cd173da820e3515274'
+  'SKIP'
   'SKIP'
   'SKIP'
   'SKIP'
