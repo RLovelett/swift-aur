@@ -60,7 +60,6 @@ source=(
   "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
   "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
   "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
-  "compiler-rt::git+https://github.com/apple/swift-compiler-rt.git#tag=${_gittag}"
 )
 
 sha256sums=(
@@ -70,7 +69,6 @@ sha256sums=(
   # SR-1023
   'cb81c24fc7013dbd0bd6f58fc274899b4e73142959242462cd79c09d5e4c3c02'
   '9bf13a5fd2e55c33adcaebc1384552ddc7956744261bf0cd173da820e3515274'
-  'SKIP'
   'SKIP'
   'SKIP'
   'SKIP'
