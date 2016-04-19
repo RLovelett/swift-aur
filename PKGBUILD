@@ -5,7 +5,7 @@ pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
