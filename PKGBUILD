@@ -1,11 +1,11 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a'
 pkgname='swiftc'
 pkgver=3.0.20160412a.r0.g36739f7
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel=3
+pkgrel=1
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
@@ -64,11 +64,11 @@ source=(
 
 sha256sums=(
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  '73228947aeffada398366afd9e89ea040ca6bc9334057ab89fa82d799b41add6'
+  'c033189fac6e5693d63ac2548ff945a1f8d4e30a09f15a54033b30b2ee513731'
   'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
   # SR-1023
-  'cb81c24fc7013dbd0bd6f58fc274899b4e73142959242462cd79c09d5e4c3c02'
-  '9bf13a5fd2e55c33adcaebc1384552ddc7956744261bf0cd173da820e3515274'
+  '1773de10c55880a2337a66b06769c30ee07415cdcf24921beb352c407025d344'
+  '7b8418dd7f7ad269285e680a85209924c29b126fed83685f841c6b1bb999c517'
   'SKIP'
   'SKIP'
   'SKIP'
