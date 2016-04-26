@@ -1,11 +1,11 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a'
 pkgname='swiftc'
 pkgver=3.0.20160412a.r0.g36739f7
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel=3
+pkgrel=1
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
