@@ -1,6 +1,11 @@
+# Maintainer: Ryan Lovelett <ryan@lovelett.me>
 _gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a'
-pkgname='swiftc'
-pkgver=3.0.20160412a.r0.g36739f7
+pkgname=(
+  'swift'
+  'swift-dev'
+  'swift-lldb'
+)
+pkgver=3.0.20160425a.r0.g56052cf
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
@@ -29,10 +34,6 @@ makedepends=(
   'swig'
   'ncurses'
   'rsync'
-)
-
-conflicts=(
-  'lldb'
 )
 
 # By default makepkg runs strip on binaries. This seems to cause issues with the Swift REPL.
@@ -99,11 +100,89 @@ prepare() {
   git apply "$srcdir/fix-lldb-build.patch"
 }
 
-package() {
+build() {
   export LC_CTYPE=en_US.UTF-8
   export LANG=en_US.UTF-8
-  installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
   cd "$srcdir/swift"
-  utils/build-script --preset=buildbot_arch_linux installable_package="${installable_package}" install_destdir="$pkgdir/"
-  tar xf "${installable_package}" -C "$pkgdir/"
+  utils/build-script --assertions \
+    --no-swift-stdlib-assertions \
+    --llbuild \
+    --swiftpm \
+    --xctest \
+    --lldb \
+    --foundation \
+    --release \
+    --build-subdir=arch_linux
+}
+
+package_swift() {
+  export LC_CTYPE=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  cd "$srcdir/swift"
+  utils/build-script --assertions \
+    --no-swift-stdlib-assertions \
+    --llbuild \
+    --swiftpm \
+    --xctest \
+    --lldb \
+    --foundation \
+    --release \
+    --build-subdir=arch_linux \
+    -- \
+    --install-swift \
+    --install-foundation \
+    --install-prefix=/usr \
+    --install-destdir="$pkgdir/" \
+    '--swift-install-components=stdlib;sdk-overlay;license' \
+    --reconfigure
+}
+
+package_swift-dev() {
+  depends=('swift')
+
+  export LC_CTYPE=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  cd "$srcdir/swift"
+  utils/build-script --assertions \
+    --no-swift-stdlib-assertions \
+    --llbuild \
+    --swiftpm \
+    --xctest \
+    --lldb \
+    --foundation \
+    --release \
+    --build-subdir=arch_linux \
+    -- \
+    --install-swift \
+    --install-llbuild \
+    --install-swiftpm \
+    --install-xctest \
+    --install-prefix=/usr \
+    --install-destdir="$pkgdir/" \
+    '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
+    --reconfigure
+}
+
+package_swift-lldb() {
+  depends=('swift', 'swift-dev')
+  conflicts=('lldb')
+
+  export LC_CTYPE=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  cd "$srcdir/swift"
+  utils/build-script --assertions \
+    --no-swift-stdlib-assertions \
+    --llbuild \
+    --swiftpm \
+    --xctest \
+    --lldb \
+    --foundation \
+    --release \
+    --build-subdir=arch_linux \
+    -- \
+    --install-lldb \
+    --install-prefix=/usr \
+    --install-destdir="$pkgdir/" \
+    '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
+    --reconfigure
 }
