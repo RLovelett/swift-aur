@@ -1,17 +1,17 @@
-From 5eaf9b8bc0f30fe9a9c265f43d16d0f62c410fbf Mon Sep 17 00:00:00 2001
+From d2834205785ddf92e1bd736027d025b29f22c76e Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Thu, 24 Dec 2015 13:10:57 -0500
 Subject: [PATCH] Provide a custom preset for Arch Linux
 
 ---
- utils/build-presets.ini | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ utils/build-presets.ini | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/utils/build-presets.ini b/utils/build-presets.ini
-index c72f3d2..013e8f5 100644
+index febfd41..6f5d368 100644
 --- a/utils/build-presets.ini
 +++ b/utils/build-presets.ini
-@@ -587,6 +587,31 @@ mixin-preset=buildbot_linux
+@@ -587,6 +587,32 @@ mixin-preset=buildbot_linux
  [preset: buildbot_linux_1404]
  mixin-preset=buildbot_linux
  
@@ -28,21 +28,22 @@ index c72f3d2..013e8f5 100644
 +skip-test-swiftpm=1
 +skip-test-xctest=1
 +skip-test-foundation=1
-+skip-test-osx=1
++skip-test-osx
 +skip-test-ios
 +skip-test-ios-simulator
 +skip-test-tvos
 +skip-test-tvos-simulator
 +skip-test-watchos
 +skip-test-watchos-simulator
++validation-test=0
 +skip-test-optimized=1
 +
 +reconfigure=1
-+verbose-build=1
++verbose-build
 +
  [preset: buildbot_linux_armv7]
  release
  llbuild
 -- 
-2.8.0
+2.8.3
 
