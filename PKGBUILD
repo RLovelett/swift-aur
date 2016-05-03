@@ -1,4 +1,4 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a'
 pkgname='swiftc'
 pkgver=3.0.20160412a.r0.g36739f7
 pkgver() {
