@@ -19,6 +19,14 @@ $ makepkg --syncdeps --rmdeps [--install]
 * The `[--install]` is meant to indicate that flag is optional. Only
   provide it if you wish to install the resulting package.
 
+Additionally building inside an Arch chroot is supported.
+
+```
+$ git clone https://github.com/RLovelett/swift-aur.git
+$ cd swift-aur
+$ /usr/bin/extra-x86_64-build
+```
+
 ## How to install
 
 There are two available options. The first is just combine the build and
