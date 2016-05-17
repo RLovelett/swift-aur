@@ -31,8 +31,19 @@ makedepends=(
   'rsync'
 )
 
+provides=(
+  'swift-language'
+  'lldb'
+  'swift-lldb'
+)
+
 conflicts=(
   'lldb'
+  'swift-lldb'
+  'swift-language-git'
+  'swift-git'
+  'swift-bin'
+  'swift'
 )
 
 # By default makepkg runs strip on binaries. This seems to cause issues with the Swift REPL.
