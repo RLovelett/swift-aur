@@ -1,0 +1,56 @@
+pkgbase = swiftc
+	pkgdesc = Swift Programming Language
+	pkgver = 3.0.20160509a.r0.g1c720b8
+	pkgrel = 1
+	url = https://swift.org/
+	arch = x86_64
+	license = Apache
+	makedepends = git
+	makedepends = cmake
+	makedepends = ninja
+	makedepends = clang
+	makedepends = sqlite
+	makedepends = swig
+	makedepends = ncurses
+	makedepends = rsync
+	depends = libxml2
+	depends = python
+	depends = python2
+	depends = libutil-linux
+	depends = libedit
+	depends = icu
+	conflicts = lldb
+	options = !strip
+	source = fix-lldb-build.patch
+	source = 0001-Provide-a-custom-preset-for-Arch-Linux.patch
+	source = 0001-Prefer-XZ-compression-over-Gzip-compression.patch
+	source = 0001-Work-around-relocation-R_X86_64_PC32-link-error.patch
+	source = 0002-Update-the-driver.patch
+	source = swift::git+http://github.com/apple/swift.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = llvm::git+http://github.com/apple/swift-llvm.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = clang::git+http://github.com/apple/swift-clang.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = lldb::git+http://github.com/apple/swift-lldb.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = cmark::git+http://github.com/apple/swift-cmark.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = llbuild::git+http://github.com/apple/swift-llbuild.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = swiftpm::git+http://github.com/apple/swift-package-manager.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	source = swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
+	sha256sums = b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153
+	sha256sums = c033189fac6e5693d63ac2548ff945a1f8d4e30a09f15a54033b30b2ee513731
+	sha256sums = c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0
+	sha256sums = 1773de10c55880a2337a66b06769c30ee07415cdcf24921beb352c407025d344
+	sha256sums = 7b8418dd7f7ad269285e680a85209924c29b126fed83685f841c6b1bb999c517
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = swiftc
+
