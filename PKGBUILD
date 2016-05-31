@@ -29,6 +29,8 @@ makedepends=(
   'swig'
   'ncurses'
   'rsync'
+  'python-pexpect'
+  'python2-pexpect'
 )
 
 provides=(
@@ -55,6 +57,8 @@ options=(!strip)
 LDFLAGS=""
 
 source=(
+  '0001-Python-3-compat.patch'
+  '0002-Add-a-git-configured-user-email.patch'
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-build-script-Reduce-the-size-of-development-snapshot.patch'
@@ -71,6 +75,8 @@ source=(
 )
 
 sha256sums=(
+  'SKIP'
+  'SKIP'
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
   'd55188f58cd0d47e140892cf146f0f9c7bd793ac40475841d6cdb023431a1f7a'
   '7e08b6fce9db794488c8779e7d7a23e2d79819eba5b66c91b6abfa96229c861a'
@@ -97,6 +103,10 @@ prepare() {
   # This is a proposed patch provided by the community. This patches Python 3 compatibility.
   # https://bugs.swift.org/browse/SR-14
   git apply "$srcdir/fix-lldb-build.patch"
+
+  cd "$srcdir/swift-integration-tests"
+  git apply "$srcdir/0001-Python-3-compat.patch"
+  git apply "$srcdir/0002-Add-a-git-configured-user-email.patch"
 }
 
 package() {

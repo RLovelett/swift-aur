@@ -1,0 +1,22 @@
+From 8c41803511101b654079e9781420575d09107657 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Wed, 1 Jun 2016 15:03:10 -0400
+Subject: [PATCH 1/2] Python 3 compat
+
+---
+ repl/test-repl-glibc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/repl/test-repl-glibc.py b/repl/test-repl-glibc.py
+index 87972c5..a42b41a 100644
+--- a/repl/test-repl-glibc.py
++++ b/repl/test-repl-glibc.py
+@@ -56,4 +56,4 @@ repl.expect("init")
+ # print repl.match.groups()
+ # print '--'
+ 
+-print "OK"
++print("OK")
+-- 
+2.8.3
+

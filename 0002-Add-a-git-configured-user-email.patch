@@ -1,0 +1,25 @@
+From 71eb54b3a4050d0e69d0b566f8d3401f4b729349 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Wed, 1 Jun 2016 17:10:06 -0400
+Subject: [PATCH 2/2] Add a git configured user/email
+
+---
+ swift-update-safety.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/swift-update-safety.md b/swift-update-safety.md
+index 76e6a6e..07239f5 100644
+--- a/swift-update-safety.md
++++ b/swift-update-safety.md
+@@ -13,6 +13,8 @@ RUN: mkdir -p %t.dir/Dep
+ RUN: %{swift} package -C %t.dir/Dep init --type library
+ RUN: git -C %t.dir/Dep init
+ RUN: git -C %t.dir/Dep add -A
++RUN: git -C %t.dir/Dep config user.name "Test User"
++RUN: git -C %t.dir/Dep config user.email "test@user.com"
+ RUN: git -C %t.dir/Dep commit -m "Initial commit."
+ RUN: git -C %t.dir/Dep tag 1.0.0
+ ```
+-- 
+2.8.3
+
