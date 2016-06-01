@@ -57,7 +57,7 @@ LDFLAGS=""
 source=(
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
-  '0001-Prefer-XZ-compression-over-Gzip-compression.patch'
+  '0001-build-script-Reduce-the-size-of-development-snapshot.patch'
   "swift::git+http://github.com/apple/swift.git#tag=${_gittag}"
   "llvm::git+http://github.com/apple/swift-llvm.git#tag=${_gittag}"
   "clang::git+http://github.com/apple/swift-clang.git#tag=${_gittag}"
@@ -73,7 +73,7 @@ source=(
 sha256sums=(
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
   'c033189fac6e5693d63ac2548ff945a1f8d4e30a09f15a54033b30b2ee513731'
-  'c864e35300e8fee8352a4e9b3d1634612e1e2f7dafc052efa12117cbab6fdfc0'
+  '7e08b6fce9db794488c8779e7d7a23e2d79819eba5b66c91b6abfa96229c861a'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -90,7 +90,7 @@ prepare() {
   cd "$srcdir/swift"
   # Prefer LZMA2 compression for smaller files. Merge request(s) upstream:
   # https://github.com/apple/swift/pull/801
-  git apply "$srcdir/0001-Prefer-XZ-compression-over-Gzip-compression.patch"
+  git apply "$srcdir/0001-build-script-Reduce-the-size-of-development-snapshot.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
 
   cd "$srcdir/lldb"
