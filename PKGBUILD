@@ -1,6 +1,6 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a'
 pkgname='swiftc'
-pkgver=3.0.20160531a.r0.g000d413
+pkgver=3.0.20160606a.r0.g9e8266a
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
@@ -80,7 +80,7 @@ sha256sums=(
   'SKIP'
   'SKIP'
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  '838bcb4381f8547c392706605bd17e59210fb485df3f4607aa41fd1c5f4090b9'
+  'd55188f58cd0d47e140892cf146f0f9c7bd793ac40475841d6cdb023431a1f7a'
   'ad464f292ca6066a1d56d62921611b3ab7190abeed8dfaf31fb7df508d8a7e10'
   'SKIP'
   'SKIP'
