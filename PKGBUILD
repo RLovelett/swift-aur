@@ -57,6 +57,7 @@ options=(!strip)
 LDFLAGS=""
 
 source=(
+  '0001-Not-sure-this-is-right-but-it-is-something.patch'
   '0001-Python-3-compat.patch'
   '0002-Add-a-git-configured-user-email.patch'
   'fix-lldb-build.patch'
@@ -75,10 +76,11 @@ source=(
 )
 
 sha256sums=(
+  '8ea3928318e32892d08f87f2b01b0bf2cdb1afc370e5e5e581bda09e9d230827'
   'SKIP'
   'SKIP'
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  'd55188f58cd0d47e140892cf146f0f9c7bd793ac40475841d6cdb023431a1f7a'
+  '838bcb4381f8547c392706605bd17e59210fb485df3f4607aa41fd1c5f4090b9'
   'ad464f292ca6066a1d56d62921611b3ab7190abeed8dfaf31fb7df508d8a7e10'
   'SKIP'
   'SKIP'
@@ -98,6 +100,9 @@ prepare() {
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-build-script-Reduce-the-size-of-development-snapshot.patch"
   git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
+
+  # Docs don't work right
+  git apply "$srcdir/0001-Not-sure-this-is-right-but-it-is-something.patch"
 
   cd "$srcdir/lldb"
   # This is a proposed patch provided by the community. This patches Python 3 compatibility.

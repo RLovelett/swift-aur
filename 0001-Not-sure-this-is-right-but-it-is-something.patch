@@ -1,0 +1,25 @@
+From a6a09ca8929f064ad9bfa6fc95b736729b4787c1 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Thu, 9 Jun 2016 15:35:40 -0400
+Subject: [PATCH] Not sure this is right but it is something
+
+---
+ cmake/modules/SwiftManpage.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/modules/SwiftManpage.cmake b/cmake/modules/SwiftManpage.cmake
+index 480b100..3bb1af3 100644
+--- a/cmake/modules/SwiftManpage.cmake
++++ b/cmake/modules/SwiftManpage.cmake
+@@ -30,7 +30,7 @@ function(manpage)
+       unused_var
+       COMMAND
+         "${POD2MAN}" "--section" "${MP_MAN_SECTION}"
+-        "--center" "${MP_PAGE_HEADER}" "--release"
++        "--center" "${MP_PAGE_HEADER}"
+         "--name" "${MP_MAN_FILE_BASENAME}"
+         "--stderr"
+         "${MP_SOURCE}" > "${output_file_name}"
+-- 
+2.8.3
+
