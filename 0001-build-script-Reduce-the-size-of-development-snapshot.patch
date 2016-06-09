@@ -1,4 +1,4 @@
-From 317ba7c5a84c9feef173081a32154b7171c015ca Mon Sep 17 00:00:00 2001
+From e56eb194c6385e57747b18cf1b879694773b9b7d Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Thu, 24 Dec 2015 14:34:27 -0500
 Subject: [PATCH] [build-script] Reduce the size of development snapshots
@@ -30,10 +30,10 @@ in mind this seems like an easy gain with little downside.
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/utils/build-script b/utils/build-script
-index 6b91227..76fd409 100755
+index d5be8b1..20f036b 100755
 --- a/utils/build-script
 +++ b/utils/build-script
-@@ -273,12 +273,12 @@ To build with AddressSanitizer:
+@@ -995,12 +995,12 @@ To build with AddressSanitizer:
  
    [~/src/s]$ ./swift/utils/build-script --preset=asan
  
@@ -49,17 +49,17 @@ index 6b91227..76fd409 100755
  If you have your own favorite set of options, you can create your own, local,
  preset.  For example, let's create a preset called 'ds' (which stands for
 diff --git a/utils/build-script-impl b/utils/build-script-impl
-index 391256f..f4e5e84 100755
+index 2d6f135..3c674aa 100755
 --- a/utils/build-script-impl
 +++ b/utils/build-script-impl
-@@ -2663,15 +2663,15 @@ function build_and_test_installable_package() {
+@@ -2775,15 +2775,15 @@ function build_and_test_installable_package() {
            # host_install_destdir contains the toolchain prefix.
            # We want to create the package in host_install_destdir_nonprefixed.
            with_pushd "${host_install_destdir}" \
 -              call tar -c -z -f "${package_for_host}" "${TOOLCHAIN_PREFIX/#\/}"
 +              call tar -c -J -f "${package_for_host}" "${TOOLCHAIN_PREFIX/#\/}"
          else
-             # tar on OSX doesn't support --owner/--group.
+             # tar on OS X doesn't support --owner/--group.
              if [[ "$(uname -s)" == "Darwin" ]] ; then
                  with_pushd "${host_install_destdir}" \
 -                    tar -c -z -f "${package_for_host}" "${host_install_prefix/#\/}"
@@ -71,7 +71,7 @@ index 391256f..f4e5e84 100755
              fi
          fi
          if [[ "${TEST_INSTALLABLE_PACKAGE}" ]] ; then
-@@ -2691,7 +2691,7 @@ function build_and_test_installable_package() {
+@@ -2803,7 +2803,7 @@ function build_and_test_installable_package() {
              call rm -rf "${PKG_TESTS_SANDBOX_PARENT}"
              call mkdir -p "${PKG_TESTS_SANDBOX}"
              with_pushd "${PKG_TESTS_SANDBOX_PARENT}" \
