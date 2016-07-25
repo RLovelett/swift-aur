@@ -1,6 +1,6 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a'
 pkgname='swiftc'
-pkgver=3.0.20160606a.r0.g9e8266a
+pkgver=3.0.20160725a.r0.g395e967
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
