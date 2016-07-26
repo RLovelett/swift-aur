@@ -1,17 +1,17 @@
-From d2834205785ddf92e1bd736027d025b29f22c76e Mon Sep 17 00:00:00 2001
+From eff5e18a39e54ab4853cf60e46b1f55e3cd5745b Mon Sep 17 00:00:00 2001
 From: Ryan Lovelett <ryan@lovelett.me>
 Date: Thu, 24 Dec 2015 13:10:57 -0500
 Subject: [PATCH] Provide a custom preset for Arch Linux
 
 ---
- utils/build-presets.ini | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ utils/build-presets.ini | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/utils/build-presets.ini b/utils/build-presets.ini
-index febfd41..6f5d368 100644
+index 43c6890..4e30eec 100644
 --- a/utils/build-presets.ini
 +++ b/utils/build-presets.ini
-@@ -587,6 +587,32 @@ mixin-preset=buildbot_linux
+@@ -604,6 +604,23 @@ mixin-preset=buildbot_linux
  [preset: buildbot_linux_1404]
  mixin-preset=buildbot_linux
  
@@ -28,15 +28,6 @@ index febfd41..6f5d368 100644
 +skip-test-swiftpm=1
 +skip-test-xctest=1
 +skip-test-foundation=1
-+skip-test-osx
-+skip-test-ios
-+skip-test-ios-simulator
-+skip-test-tvos
-+skip-test-tvos-simulator
-+skip-test-watchos
-+skip-test-watchos-simulator
-+validation-test=0
-+skip-test-optimized=1
 +
 +reconfigure=1
 +verbose-build
