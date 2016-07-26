@@ -1,0 +1,19 @@
+*.log
+*.xz
+
+# makepkg Directories
+pkg/
+src/
+
+# Swift Source Directories
+clang/
+cmark/
+llbuild/
+lldb/
+llvm/
+swift-corelibs-foundation/
+swift-corelibs-libdispatch/
+swift-corelibs-xctest/
+swift-integration-tests/
+swift/
+swiftpm/
