@@ -60,16 +60,16 @@ source=(
   'fix-lldb-build.patch'
   '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
   '0001-build-script-Reduce-the-size-of-development-snapshot.patch'
-  "swift::git+http://github.com/apple/swift.git#tag=${_gittag}"
-  "llvm::git+http://github.com/apple/swift-llvm.git#tag=${_gittag}"
-  "clang::git+http://github.com/apple/swift-clang.git#tag=${_gittag}"
-  "lldb::git+http://github.com/apple/swift-lldb.git#tag=${_gittag}"
-  "cmark::git+http://github.com/apple/swift-cmark.git#tag=${_gittag}"
-  "llbuild::git+http://github.com/apple/swift-llbuild.git#tag=${_gittag}"
-  "swiftpm::git+http://github.com/apple/swift-package-manager.git#tag=${_gittag}"
-  "swift-corelibs-xctest::git+http://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
-  "swift-corelibs-foundation::git+http://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
-  "swift-integration-tests::git+http://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
+  "swift::git+https://github.com/apple/swift.git#tag=${_gittag}"
+  "llvm::git+https://github.com/apple/swift-llvm.git#tag=${_gittag}"
+  "clang::git+https://github.com/apple/swift-clang.git#tag=${_gittag}"
+  "lldb::git+https://github.com/apple/swift-lldb.git#tag=${_gittag}"
+  "cmark::git+https://github.com/apple/swift-cmark.git#tag=${_gittag}"
+  "llbuild::git+https://github.com/apple/swift-llbuild.git#tag=${_gittag}"
+  "swiftpm::git+https://github.com/apple/swift-package-manager.git#tag=${_gittag}"
+  "swift-corelibs-xctest::git+https://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
+  "swift-corelibs-foundation::git+https://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
+  "swift-integration-tests::git+https://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
 )
 
 sha256sums=(
