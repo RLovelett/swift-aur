@@ -1,6 +1,6 @@
-_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a'
+_gittag='swift-DEVELOPMENT-SNAPSHOT-2016-08-15-a'
 pkgname='swiftc'
-pkgver=3.0.20160725a.r0.g395e967
+pkgver=3.0.20160815a.r0.g4f53564
 pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
@@ -58,7 +58,7 @@ LDFLAGS=""
 
 source=(
   'fix-lldb-build.patch'
-  '0001-Provide-a-custom-preset-for-Arch-Linux.patch'
+  'build-presets.ini'
   '0001-build-script-Reduce-the-size-of-development-snapshot.patch'
   "swift::git+https://github.com/apple/swift.git#tag=${_gittag}"
   "llvm::git+https://github.com/apple/swift-llvm.git#tag=${_gittag}"
@@ -74,7 +74,7 @@ source=(
 
 sha256sums=(
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  '838bcb4381f8547c392706605bd17e59210fb485df3f4607aa41fd1c5f4090b9'
+  'b17d5973e92dc1a228762a027143d9782257078e246e5564a5eb133ff4c101d9'
   'ad464f292ca6066a1d56d62921611b3ab7190abeed8dfaf31fb7df508d8a7e10'
   'SKIP'
   'SKIP'
@@ -93,7 +93,6 @@ prepare() {
   # Prefer LZMA2 compression for smaller files. Merge request(s) upstream:
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-build-script-Reduce-the-size-of-development-snapshot.patch"
-  git apply "$srcdir/0001-Provide-a-custom-preset-for-Arch-Linux.patch"
 
   cd "$srcdir/lldb"
   # This is a proposed patch provided by the community. This patches Python 3 compatibility.
@@ -106,6 +105,10 @@ package() {
   export LANG=en_US.UTF-8
   installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
   cd "$srcdir/swift"
-  utils/build-script --preset=buildbot_arch_linux installable_package="${installable_package}" install_destdir="$pkgdir/"
+  utils/build-script \
+    --preset-file="${srcdir}/build-presets.ini" \
+    --preset=buildbot_arch_linux \
+    installable_package="${installable_package}" \
+    install_destdir="$pkgdir/"
   tar xf "${installable_package}" -C "$pkgdir/"
 }
