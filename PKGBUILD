@@ -5,7 +5,7 @@ pkgver() {
   cd "$srcdir/swift"
   git describe --long --tags | sed -r 's/swift.DEVELOPMENT-SNAPSHOT-([0-9]+)-([0-9]+)-([0-9]+)-([a-z]+)-([0-9]+)/3.0.\1\2\3\4.r\5/g;s/-/./g'
 }
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
@@ -18,6 +18,7 @@ depends=(
   'libutil-linux'
   'libedit'
   'icu'
+  'libbsd'
 )
 
 makedepends=(
@@ -46,6 +47,7 @@ conflicts=(
   'swift-git'
   'swift-bin'
   'swift'
+  'libkqueue'
 )
 
 # By default makepkg runs strip on binaries. This seems to cause issues with the Swift REPL.
@@ -57,6 +59,7 @@ options=(!strip)
 LDFLAGS=""
 
 source=(
+  '0001-ClangImporter-enable-fblocks-on-non-Darwin-platforms.patch'
   'fix-lldb-build.patch'
   'build-presets.ini'
   '0001-build-script-Reduce-the-size-of-development-snapshot.patch'
@@ -69,13 +72,16 @@ source=(
   "swiftpm::git+https://github.com/apple/swift-package-manager.git#tag=${_gittag}"
   "swift-corelibs-xctest::git+https://github.com/apple/swift-corelibs-xctest.git#tag=${_gittag}"
   "swift-corelibs-foundation::git+https://github.com/apple/swift-corelibs-foundation.git#tag=${_gittag}"
+  "swift-corelibs-libdispatch::git+https://github.com/apple/swift-corelibs-libdispatch.git#commit=81d1d0cb34fa65452f75b3973f1295a425c4087d"
   "swift-integration-tests::git+https://github.com/apple/swift-integration-tests.git#tag=${_gittag}"
 )
 
 sha256sums=(
+  '5582b7958ec843c5b1b299ba18bdde4acb8109025d7d29af893dc40c9b9ef7c4'
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  'b17d5973e92dc1a228762a027143d9782257078e246e5564a5eb133ff4c101d9'
+  'ef994c98a430cb4a0c8694716d8f9e132f43a9081dbffdbaa44f5f5132d34a26'
   'ad464f292ca6066a1d56d62921611b3ab7190abeed8dfaf31fb7df508d8a7e10'
+  'SKIP'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -89,10 +95,14 @@ sha256sums=(
 )
 
 prepare() {
+  cd "$srcdir/swift-corelibs-libdispatch"
+  git submodule update --init --recursive
+
   cd "$srcdir/swift"
   # Prefer LZMA2 compression for smaller files. Merge request(s) upstream:
   # https://github.com/apple/swift/pull/801
   git apply "$srcdir/0001-build-script-Reduce-the-size-of-development-snapshot.patch"
+  git apply "$srcdir/0001-ClangImporter-enable-fblocks-on-non-Darwin-platforms.patch"
 
   cd "$srcdir/lldb"
   # This is a proposed patch provided by the community. This patches Python 3 compatibility.

@@ -1,0 +1,67 @@
+From 55efec89edd5d9514a147b62e9db15fefc5a7840 Mon Sep 17 00:00:00 2001
+From: David Grove <groved@us.ibm.com>
+Date: Thu, 28 Jul 2016 17:51:40 -0400
+Subject: [PATCH 1/1] ClangImporter: enable -fblocks on non-Darwin platforms
+
+We need to enable blocks support in the ClangImporter on
+non-Darwin platforms for libdispatch (and transitively foundation).
+The simplest way to do this is to just enable blocks unconditionally.
+
+Also enable two Linux tests that are no longer XFAILS
+---
+ lib/ClangImporter/ClangImporter.cpp   | 5 ++++-
+ test/ClangModules/cfuncs_parse.swift  | 2 --
+ test/ClangModules/cstring_parse.swift | 2 --
+ 3 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/lib/ClangImporter/ClangImporter.cpp b/lib/ClangImporter/ClangImporter.cpp
+index bc18785..4b5f901 100644
+--- a/lib/ClangImporter/ClangImporter.cpp
++++ b/lib/ClangImporter/ClangImporter.cpp
+@@ -332,6 +332,9 @@ getNormalInvocationArguments(std::vector<std::string> &invocationArgStrs,
+           // Don't emit LLVM IR.
+           "-fsyntax-only",
+ 
++          // enable block support
++          "-fblocks",
++
+           "-fretain-comments-from-system-headers",
+ 
+           SHIMS_INCLUDE_FLAG, searchPathOpts.RuntimeResourcePath,
+@@ -341,7 +344,7 @@ getNormalInvocationArguments(std::vector<std::string> &invocationArgStrs,
+   if (triple.isOSDarwin()) {
+     invocationArgStrs.insert(invocationArgStrs.end(), {
+       // Darwin uses Objective-C ARC.
+-      "-x", "objective-c", "-std=gnu11", "-fobjc-arc", "-fblocks",
++      "-x", "objective-c", "-std=gnu11", "-fobjc-arc",
+ 
+       // Define macros that Swift bridging headers use.
+       "-DSWIFT_CLASS_EXTRA=__attribute__((annotate(\""
+diff --git a/test/ClangModules/cfuncs_parse.swift b/test/ClangModules/cfuncs_parse.swift
+index 9ada150..1075c19 100644
+--- a/test/ClangModules/cfuncs_parse.swift
++++ b/test/ClangModules/cfuncs_parse.swift
+@@ -1,7 +1,5 @@
+ // RUN: %target-swift-frontend(mock-sdk: %clang-importer-sdk) -parse -verify -I %S/Inputs %s
+ 
+-// XFAIL: linux
+-
+ import cfuncs
+ 
+ func test_cfunc1(_ i: Int) {
+diff --git a/test/ClangModules/cstring_parse.swift b/test/ClangModules/cstring_parse.swift
+index 912d8a6..5c6bdf0 100644
+--- a/test/ClangModules/cstring_parse.swift
++++ b/test/ClangModules/cstring_parse.swift
+@@ -5,8 +5,6 @@
+ // RUN: %target-swift-frontend(mock-sdk: %clang-importer-sdk) -parse -verify -module-cache-path %t/clang-module-cache -I %S/Inputs %s
+ // RUN: ls -lR %t/clang-module-cache | %FileCheck %s
+ 
+-// XFAIL: linux
+-
+ // CHECK: cfuncs{{.*}}.pcm
+ 
+ import cfuncs
+-- 
+2.9.3
+
