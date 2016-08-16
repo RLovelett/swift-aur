@@ -8,26 +8,28 @@ pkgdesc='Swift Programming Language'
 url='https://swift.org/'
 
 depends=(
-  'libxml2'
-  'python'
-  'python2'
-  'libutil-linux'
-  'libedit'
   'icu'
   'libbsd'
+  'libedit'
+  'libutil-linux'
+  'libxml2'
+  'ncurses'
+  'python'
+  'python2'
 )
 
 makedepends=(
-  'git'
   'cmake'
+  'clang>=3.8'
+  'git'
   'ninja'
-  'clang'
-  'sqlite'
-  'swig'
-  'ncurses'
-  'rsync'
+  'perl'
   'python-pexpect'
   'python2-pexpect'
+  'rsync'
+  'sqlite'
+  'swig'
+  'words'
 )
 
 provides=(
