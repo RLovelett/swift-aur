@@ -19,8 +19,9 @@ depends=(
 )
 
 makedepends=(
-  'cmake'
   'clang>=3.8'
+  'cmake'
+  'coreutils'
   'git'
   'ninja'
   'perl'
@@ -105,15 +106,22 @@ prepare() {
   git apply "$srcdir/fix-lldb-build.patch"
 }
 
-package() {
+build() {
   export LC_CTYPE=en_US.UTF-8
   export LANG=en_US.UTF-8
+  tmpdir=$(mktemp -d)
   installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
+
   cd "$srcdir/swift"
   utils/build-script \
     --preset-file="${srcdir}/build-presets.ini" \
     --preset=buildbot_arch_linux \
     installable_package="${installable_package}" \
-    install_destdir="$pkgdir/"
+    install_destdir="${tmpdir}/"
+  rm -rf $tmpdir
+}
+
+package() {
+  installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
   tar xf "${installable_package}" -C "$pkgdir/"
 }
