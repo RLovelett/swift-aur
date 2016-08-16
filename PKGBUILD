@@ -1,7 +1,7 @@
 _gittag='swift-3.0.1-RELEASE'
 pkgname='swiftc'
 pkgver=3.0.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('Apache')
 pkgdesc='Swift Programming Language'
@@ -76,7 +76,7 @@ source=(
 
 sha256sums=(
   'b71e2498d47ff977511e85510f251eca964a4a0433b71070c9cdb9ffe92a2153'
-  'ef994c98a430cb4a0c8694716d8f9e132f43a9081dbffdbaa44f5f5132d34a26'
+  '1d57c8337cdc3235db87f674e8aae8f34597a1f12a53f6dc1b69c0a286c18ee8'
   'ad464f292ca6066a1d56d62921611b3ab7190abeed8dfaf31fb7df508d8a7e10'
   'SKIP'
   'SKIP'
@@ -113,11 +113,32 @@ build() {
   installable_package="$(readlink -f ${srcdir}/../swift-${pkgver}.tar.xz)"
 
   cd "$srcdir/swift"
+
+  # First pass without SourceKit
   utils/build-script \
     --preset-file="${srcdir}/build-presets.ini" \
     --preset=buildbot_arch_linux \
     installable_package="${installable_package}" \
+    install_destdir="${tmpdir}"
+
+  # Cleanup some built files
+  rm -rf $tmpdir
+  mkdir -p $tmpdir
+  rm "${installable_package}"
+  rm "${srcdir}/build/buildbot_linux/swift-linux-x86_64/CMakeCache.txt"
+  rm "${srcdir}/build/buildbot_linux/libdispatch-linux-x86_64/Makefile"
+  rm "${srcdir}/build/buildbot_linux/libdispatch-linux-x86_64/config.log"
+  rm "${srcdir}/build/buildbot_linux/libdispatch-linux-x86_64/config.status"
+  rm -rf "${srcdir}/build/buildbot_linux/libdispatch-linux-x86_64/config"
+
+  # Second pass with SourceKit
+  utils/build-script \
+    --preset-file="${srcdir}/build-presets.ini" \
+    --preset=buildbot_arch_linux_sourcekit \
+    installable_package="${installable_package}" \
     install_destdir="${tmpdir}/"
+
+  # Clean-up at the end
   rm -rf $tmpdir
 }
 
