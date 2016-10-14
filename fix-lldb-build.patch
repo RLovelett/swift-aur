@@ -1,8 +1,19 @@
+From 866c36ad56c73dd8f85fc7cc682cfea6b0cd6ae9 Mon Sep 17 00:00:00 2001
+From: Ryan Lovelett <ryan@lovelett.me>
+Date: Fri, 14 Oct 2016 11:57:28 -0400
+Subject: [PATCH] Upstream patch rebased
+
+---
+ cmake/modules/LLDBConfig.cmake               | 1 +
+ cmake/modules/LLDBStandalone.cmake           | 2 +-
+ scripts/Python/modules/readline/readline.cpp | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
 diff --git a/cmake/modules/LLDBConfig.cmake b/cmake/modules/LLDBConfig.cmake
-index 5bba612..39e50ae 100644
+index d4edeaa..5f8a697 100644
 --- a/cmake/modules/LLDBConfig.cmake
 +++ b/cmake/modules/LLDBConfig.cmake
-@@ -182,6 +182,7 @@ if (NOT LLDB_DISABLE_PYTHON)
+@@ -178,6 +178,7 @@ if (NOT LLDB_DISABLE_PYTHON)
        add_definitions( -DLLDB_PYTHON_HOME="${LLDB_PYTHON_HOME}" )
      endif()
    else()
@@ -11,11 +22,11 @@ index 5bba612..39e50ae 100644
    endif()
    
 diff --git a/cmake/modules/LLDBStandalone.cmake b/cmake/modules/LLDBStandalone.cmake
-index cf762a6..50e96cc 100644
+index 04ead96..eb83400 100644
 --- a/cmake/modules/LLDBStandalone.cmake
 +++ b/cmake/modules/LLDBStandalone.cmake
-@@ -74,7 +74,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-   include(HandleLLVMOptions)
+@@ -116,7 +116,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+ 
  
    if (PYTHON_EXECUTABLE STREQUAL "")
 -    set(Python_ADDITIONAL_VERSIONS 3.5 3.4 3.3 3.2 3.1 3.0 2.7 2.6 2.5)
@@ -24,15 +35,18 @@ index cf762a6..50e96cc 100644
      if( NOT PYTHONINTERP_FOUND )
        message(FATAL_ERROR
 diff --git a/scripts/Python/modules/readline/readline.cpp b/scripts/Python/modules/readline/readline.cpp
-index d4b4962..1fd8547 100644
+index b84dbb8..668e3b9 100644
 --- a/scripts/Python/modules/readline/readline.cpp
 +++ b/scripts/Python/modules/readline/readline.cpp
-@@ -90,7 +90,7 @@ initreadline(void)
+@@ -81,7 +81,7 @@ PyMODINIT_FUNC initreadline(void) {
  #if PY_MAJOR_VERSION >= 3
-     return PyModule_Create(&readline_module);
+   return PyModule_Create(&readline_module);
  #else
--    Py_InitModule4(
-+    Py_InitModule4_64(
-         "readline",
-         moduleMethods,
-         moduleDocumentation,
+-  Py_InitModule4("readline", moduleMethods, moduleDocumentation,
++  Py_InitModule4_64("readline", moduleMethods, moduleDocumentation,
+                  static_cast<PyObject *>(NULL), PYTHON_API_VERSION);
+ #endif
+ }
+-- 
+2.10.0
+
