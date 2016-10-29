@@ -1,6 +1,6 @@
-_gittag='swift-3.0-RELEASE'
+_gittag='swift-3.0.1-RELEASE'
 pkgname='swiftc'
-pkgver=3.0.0
+pkgver=3.0.1
 pkgrel=1
 arch=('x86_64')
 license=('Apache')
